@@ -3,26 +3,85 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/HomeFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.katiebarnett.customdeckbuilder.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:id="@+id/HomeFragment"
+        android:name="dev.katiebarnett.customdeckbuilder.presentation.HomeFragment"
+        android:label="@string/home_fragment_label"
+        tools:layout="@layout/home_fragment">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_HomeFragment_to_GameFragment"
+            app:destination="@id/GameFragment" />
+        
     </fragment>
+
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.katiebarnett.customdeckbuilder.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/GameFragment"
+        android:name="dev.katiebarnett.customdeckbuilder.presentation.GameFragment"
+        android:label="@string/game_fragment_label"
+        tools:layout="@layout/game_fragment">
+
+        <argument
+            android:name="gameId"
+            app:argType="long"/>
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_GameFragment_to_DeckFragment"
+            app:destination="@id/DeckFragment" />
+        
     </fragment>
+    
+    <fragment
+        android:id="@+id/DeckFragment"
+        android:name="dev.katiebarnett.customdeckbuilder.presentation.DeckFragment"
+        android:label="@string/deck_fragment_label"
+        tools:layout="@layout/deck_fragment">
+
+        <argument
+            android:name="deckId"
+            app:argType="java.lang.Integer"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+        
+        <action
+            android:id="@+id/action_DeckFragment_to_CardsFragment"
+            app:destination="@id/CardsFragment" />
+        <action
+            android:id="@+id/action_DeckFragment_to_EditCardFragment"
+            app:destination="@id/EditCardFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/CardsFragment"
+        android:name="dev.katiebarnett.customdeckbuilder.presentation.CardsFragment"
+        android:label="@string/cards_fragment_label"
+        tools:layout="@layout/cards_fragment">
+
+        <action
+            android:id="@+id/action_CardsFragment_to_ViewCardFragment"
+            app:destination="@id/ViewCardFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ViewCardFragment"
+        android:name="dev.katiebarnett.customdeckbuilder.presentation.CardsFragment"
+        android:label="@string/view_card_fragment_label"
+        tools:layout="@layout/view_card_fragment">
+
+        <action
+            android:id="@+id/action_ViewCardFragment_to_EditCardFragment"
+            app:destination="@id/EditCardFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/EditCardFragment"
+        android:name="dev.katiebarnett.customdeckbuilder.presentation.CardsFragment"
+        android:label="@string/edit_card_fragment_label"
+        tools:layout="@layout/edit_card_fragment">
+
+    </fragment>
+    
 </navigation>

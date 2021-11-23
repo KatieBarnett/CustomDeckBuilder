@@ -1,9 +1,21 @@
 <resources>
     <string name="app_name">Custom Deck Builder</string>
     <string name="action_settings">Settings</string>
+    
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="home_fragment_label">Games</string>
+    <string name="game_fragment_label">Game</string>
+    <string name="deck_fragment_label">Deck</string>
+    <string name="cards_fragment_label">View Cards</string>
+    <string name="view_card_fragment_label">Card</string>
+    <string name="edit_card_fragment_label">Edit Card</string>
+    
+    <!-- New Game Dialog -->
+    <string name="game_dialog_name_label">Game name</string>
+    <string name="game_dialog_button_cancel">Cancel</string>
+    <string name="game_dialog_button_save">Save</string>
+    
+    
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
