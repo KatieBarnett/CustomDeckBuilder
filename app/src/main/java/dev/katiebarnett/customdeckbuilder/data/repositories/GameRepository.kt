@@ -10,7 +10,7 @@ class GameRepository @Inject constructor(
     private val deckBuilderDao: DeckBuilderDao
 ) {
 
-    suspend fun getAllGames() = deckBuilderDao.getAllGames()
+    fun getAllGames() = deckBuilderDao.getAllGames()
     
 //    suspend fun getAllGames(): Resource<List<Game>> {
 //        return coroutineScope {

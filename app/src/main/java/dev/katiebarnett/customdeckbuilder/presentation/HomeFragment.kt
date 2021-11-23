@@ -58,7 +58,14 @@ class HomeFragment : Fragment(), NewGameDialog.NewGameDialogListener {
         })
         
         viewModel.gameCreationResponse.observe(viewLifecycleOwner, {
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToGameFragment(gameId = it))
+            if (it != -1L) {
+                viewModel.clearGameCreationResponse()
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToGameFragment(
+                        gameId = it
+                    )
+                )
+            }
         })
     }
 

@@ -36,7 +36,7 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        
         viewModel.snackbar.observe(viewLifecycleOwner, {
             it?.let {
                 Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()

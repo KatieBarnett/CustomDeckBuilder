@@ -2,13 +2,14 @@ package dev.katiebarnett.customdeckbuilder.data.storage
 
 import androidx.room.*
 import dev.katiebarnett.customdeckbuilder.models.Game
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DeckBuilderDao {
 
     // Games
     @Query("SELECT * FROM " + DatabaseConstants.TABLE_GAMES + " ORDER BY name")
-    suspend fun getAllGames(): List<Game>
+    fun getAllGames(): Flow<List<Game>>
     
     @Query("SELECT * FROM " + DatabaseConstants.TABLE_GAMES + " WHERE id = :gameId")
     fun getGame(gameId: Long): List<Game>

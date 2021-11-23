@@ -9,6 +9,7 @@ import dev.katiebarnett.customdeckbuilder.models.SuccessResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,23 +27,21 @@ class HomeViewModel @Inject constructor(
     val snackbar: LiveData<String?>
         get() = _snackbar
     
-    val games = MutableLiveData<List<Game>>(listOf())
-    
-    private val _gameCreationResponse = MutableLiveData<Long>()
+    private val _gameCreationResponse = MutableLiveData<Long>(-1)
     val gameCreationResponse: LiveData<Long>
         get() = _gameCreationResponse
-    
-    init {
-        launchDataLoad {
-            games.postValue(gameRepository.getAllGames())
-        }
-    }
+
+    val games: LiveData<List<Game>> = gameRepository.getAllGames().asLiveData()
     
     fun createGame(gameName: String) {
         val game = Game(name = gameName)
         launchDataLoad {
             _gameCreationResponse.postValue(gameRepository.updateGame(game))
         }
+    }
+    
+    fun clearGameCreationResponse() {
+        _gameCreationResponse.value = -1
     }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {
