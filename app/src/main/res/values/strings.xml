@@ -8,7 +8,7 @@
     <string name="deck_fragment_label">Deck</string>
     <string name="cards_fragment_label">View Cards</string>
     <string name="view_card_fragment_label">Card</string>
-    <string name="edit_card_fragment_label">Edit Card</string>
+    <string name="camera_fragment_label">Take Photo</string>
     
     <!-- New Game Dialog -->
     <string name="game_dialog_name_label">Game name</string>
@@ -23,7 +23,13 @@
     
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    
+    <!-- Errors -->
+    <string name="error_camera_permission">You can\'t add new cards without enabling the camera. Please allow camera permissions from the settings screen and try again.</string>
+    
+    <string name="error_camera_permission_settings">Settings</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="error_settings">An error occurred while loading your app settings. Please try again.</string>
+    <string name="error_button_negative">Cancel</string>
+    
 </resources>

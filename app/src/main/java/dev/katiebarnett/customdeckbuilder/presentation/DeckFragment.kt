@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.customdeckbuilder.R
 import dev.katiebarnett.customdeckbuilder.databinding.DeckFragmentBinding
@@ -15,6 +16,8 @@ import dev.katiebarnett.customdeckbuilder.databinding.DeckFragmentBinding
 class DeckFragment : Fragment() {
     
     private lateinit var binding: DeckFragmentBinding
+
+    val args: DeckFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.deck_fragment, container, false)
@@ -26,7 +29,7 @@ class DeckFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.newCard.setOnClickListener {
-            findNavController().navigate(DeckFragmentDirections.actionDeckFragmentToEditCardFragment())
+            findNavController().navigate(DeckFragmentDirections.actionDeckFragmentToCameraFragment(args.deckId))
         }
     }
 }

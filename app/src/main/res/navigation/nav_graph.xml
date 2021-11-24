@@ -46,9 +46,10 @@
         <action
             android:id="@+id/action_DeckFragment_to_CardsFragment"
             app:destination="@id/CardsFragment" />
+
         <action
-            android:id="@+id/action_DeckFragment_to_EditCardFragment"
-            app:destination="@id/EditCardFragment" />
+            android:id="@+id/action_DeckFragment_to_CameraFragment"
+            app:destination="@id/CameraFragment" />
 
     </fragment>
 
@@ -61,6 +62,11 @@
         <action
             android:id="@+id/action_CardsFragment_to_ViewCardFragment"
             app:destination="@id/ViewCardFragment" />
+
+        <action
+            android:id="@+id/action_CardsFragment_to_CameraFragment"
+            app:destination="@id/CameraFragment" />
+        
     </fragment>
 
     <fragment
@@ -70,15 +76,19 @@
         tools:layout="@layout/view_card_fragment">
 
         <action
-            android:id="@+id/action_ViewCardFragment_to_EditCardFragment"
-            app:destination="@id/EditCardFragment" />
+            android:id="@+id/action_ViewCardFragment_to_CameraFragment"
+            app:destination="@id/CameraFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/EditCardFragment"
-        android:name="dev.katiebarnett.customdeckbuilder.presentation.CardsFragment"
-        android:label="@string/edit_card_fragment_label"
-        tools:layout="@layout/edit_card_fragment">
+        android:id="@+id/CameraFragment"
+        android:name="dev.katiebarnett.customdeckbuilder.presentation.CameraFragment"
+        android:label="@string/camera_fragment_label"
+        tools:layout="@layout/camera_fragment">
+        
+        <argument
+            android:name="deckId"
+            app:argType="long"/>
 
     </fragment>
     
