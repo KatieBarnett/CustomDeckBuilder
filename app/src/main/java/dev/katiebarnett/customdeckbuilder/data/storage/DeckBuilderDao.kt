@@ -1,6 +1,7 @@
 package dev.katiebarnett.customdeckbuilder.data.storage
 
 import androidx.room.*
+import dev.katiebarnett.customdeckbuilder.models.Deck
 import dev.katiebarnett.customdeckbuilder.models.Game
 import kotlinx.coroutines.flow.Flow
 
@@ -12,7 +13,7 @@ interface DeckBuilderDao {
     fun getAllGames(): Flow<List<Game>>
     
     @Query("SELECT * FROM " + DatabaseConstants.TABLE_GAMES + " WHERE id = :gameId")
-    fun getGame(gameId: Long): List<Game>
+    fun getGame(gameId: Long): Flow<List<Game>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg game: Game?): List<Long>
@@ -21,15 +22,15 @@ interface DeckBuilderDao {
     suspend fun delete(game: Game)
 
 
-//    // Decks
-//    @Query("SELECT * FROM " + DatabaseConstants.TABLE_DECKS + " WHERE gameId = :gameId ORDER BY name")
-//    fun getDecksForGame(gameId: Long): LiveData<List<Deck>>
+    // Decks
+    @Query("SELECT * FROM " + DatabaseConstants.TABLE_DECKS + " WHERE gameId = :gameId ORDER BY name")
+    fun getDecksForGame(gameId: Long): Flow<List<Deck>>
 //    
 //    @Query("SELECT * FROM " + DatabaseConstants.TABLE_DECKS + " WHERE id = :deckId")
 //    fun getDeck(deckId: Long): LiveData<List<Deck>>
 //
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun insert(vararg deck: Deck?): LiveData<List<Long>>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(vararg deck: Deck?): List<Long>
 //
 //    @Delete
 //    suspend fun delete(deck: Deck)

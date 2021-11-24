@@ -1,7 +1,9 @@
 package dev.katiebarnett.customdeckbuilder.data.repositories
 
 import dev.katiebarnett.customdeckbuilder.data.storage.DeckBuilderDao
+import dev.katiebarnett.customdeckbuilder.models.Deck
 import dev.katiebarnett.customdeckbuilder.models.Game
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -10,42 +12,27 @@ class GameRepository @Inject constructor(
     private val deckBuilderDao: DeckBuilderDao
 ) {
 
-    fun getAllGames() = deckBuilderDao.getAllGames()
+    fun getAllGames(): Flow<List<Game>> {
+        return deckBuilderDao.getAllGames()
+    }
     
-//    suspend fun getAllGames(): Resource<List<Game>> {
-//        return coroutineScope {
-//            try {
-//                withContext(Dispatchers.IO) {
-//                    SuccessResource<List<Game>>(data = deckBuilderDao.getAllGames())
-//                }
-//            } catch (e: Exception) {
-//                ErrorResource<List<Game>>(error = e)
-//            }
-//        }
-//    }
-//
-
     suspend fun updateGame(game: Game): Long {
         game.lastModified = System.currentTimeMillis()
         val primaryKey = deckBuilderDao.insert(game)
         return primaryKey.firstOrNull() ?: throw Throwable("Error creating game")
     }
 
-    suspend fun getGame(id: Long): Game? {
-        return deckBuilderDao.getGame(id).firstOrNull()
+    fun getGame(id: Long): Flow<List<Game>> {
+        return deckBuilderDao.getGame(id)
     }
-//
-//    suspend fun removeGame(game: Game): Resource<Boolean> {
-//        return coroutineScope {
-//            try {
-//                withContext(Dispatchers.IO) {
-//                    deckBuilderDao.delete(game)
-//                    SuccessResource<Boolean>(data = true)
-//                }
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                ErrorResource<Boolean>(error = e)
-//            }
-//        }
-//    }
+    
+    fun getDecksForGame(gameId: Long): Flow<List<Deck>> {
+        return deckBuilderDao.getDecksForGame(gameId)
+    }
+
+    suspend fun updateDeck(deck: Deck): Long {
+        deck.lastModified = System.currentTimeMillis()
+        val primaryKey = deckBuilderDao.insert(deck)
+        return primaryKey.firstOrNull() ?: throw Throwable("Error creating deck")
+    }
 }

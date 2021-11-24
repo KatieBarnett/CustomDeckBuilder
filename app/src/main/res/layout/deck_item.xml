@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="dev.katiebarnett.customdeckbuilder.models.Deck" />
+
+        <variable
+            name="itemClickListener"
+            type="dev.katiebarnett.customdeckbuilder.presentation.util.OnItemClickListener" />
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> itemClickListener.onItemClicked(item)}">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Deck name"
+            android:text="@{item.name}"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:layout_margin="@dimen/space_half"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -41,9 +41,7 @@
 
         <argument
             android:name="deckId"
-            app:argType="java.lang.Integer"
-            app:nullable="true"
-            android:defaultValue="@null"/>
+            app:argType="long"/>
         
         <action
             android:id="@+id/action_DeckFragment_to_CardsFragment"

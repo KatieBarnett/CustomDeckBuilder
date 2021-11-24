@@ -8,7 +8,10 @@
         <variable
             name="viewModel"
             type="dev.katiebarnett.customdeckbuilder.presentation.GameViewModel" />
-
+        
+        <variable
+            name="listItemBinding"
+            type="me.tatarka.bindingcollectionadapter2.ItemBinding&lt;dev.katiebarnett.customdeckbuilder.models.Deck&gt;" />
 
     </data>
     
@@ -29,7 +32,10 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:items="@{viewModel.decks}"
+                app:itemBinding="@{listItemBinding}"/>
             
         </androidx.constraintlayout.widget.ConstraintLayout>
     

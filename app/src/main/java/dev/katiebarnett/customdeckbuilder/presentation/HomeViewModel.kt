@@ -1,16 +1,11 @@
 package dev.katiebarnett.customdeckbuilder.presentation
 
 import androidx.lifecycle.*
-import dev.katiebarnett.customdeckbuilder.data.repositories.GameRepository
-import dev.katiebarnett.customdeckbuilder.models.ErrorResource
-import dev.katiebarnett.customdeckbuilder.models.Game
-import dev.katiebarnett.customdeckbuilder.models.Resource
-import dev.katiebarnett.customdeckbuilder.models.SuccessResource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.katiebarnett.customdeckbuilder.data.repositories.GameRepository
+import dev.katiebarnett.customdeckbuilder.models.Game
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

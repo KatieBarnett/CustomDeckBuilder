@@ -14,6 +14,11 @@
     <string name="game_dialog_name_label">Game name</string>
     <string name="game_dialog_button_cancel">Cancel</string>
     <string name="game_dialog_button_save">Save</string>
+
+    <!-- New Deck Dialog -->
+    <string name="deck_dialog_name_label">Deck name</string>
+    <string name="deck_dialog_button_cancel">Cancel</string>
+    <string name="deck_dialog_button_save">Save</string>
     
     
     <string name="next">Next</string>

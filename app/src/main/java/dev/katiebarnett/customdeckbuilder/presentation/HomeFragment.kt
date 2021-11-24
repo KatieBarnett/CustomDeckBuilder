@@ -1,30 +1,30 @@
 package dev.katiebarnett.customdeckbuilder.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import dev.katiebarnett.customdeckbuilder.R
-import dev.katiebarnett.customdeckbuilder.BR
-import dev.katiebarnett.customdeckbuilder.databinding.HomeFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
+import dev.katiebarnett.customdeckbuilder.BR
+import dev.katiebarnett.customdeckbuilder.R
+import dev.katiebarnett.customdeckbuilder.databinding.HomeFragmentBinding
 import dev.katiebarnett.customdeckbuilder.models.Game
+import dev.katiebarnett.customdeckbuilder.presentation.dialogs.NewGameDialog
 import dev.katiebarnett.customdeckbuilder.presentation.util.OnItemClickListener
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), NewGameDialog.NewGameDialogListener {
+class HomeFragment : Fragment(), NewGameDialog.DialogListener {
     
     private lateinit var binding: HomeFragmentBinding
     
     private val viewModel: HomeViewModel by viewModels()
-
-
+    
     private val gameListItemClickListener = (object: OnItemClickListener<Game> {
         override fun onItemClicked(item: Game) {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToGameFragment(gameId = item.id))

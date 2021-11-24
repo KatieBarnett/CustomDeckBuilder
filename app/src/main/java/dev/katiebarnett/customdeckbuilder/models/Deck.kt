@@ -11,4 +11,4 @@ data class Deck(
     val gameId: Long,
     var lastModified: Long = System.currentTimeMillis(),
     val name: String,
-    val imageUrl: String)
+    val imageUrl: String? = null)

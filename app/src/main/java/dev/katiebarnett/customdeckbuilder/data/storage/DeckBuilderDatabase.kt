@@ -11,7 +11,7 @@ import dev.katiebarnett.customdeckbuilder.models.Game
 @Database(entities = [
     Game::class,
     Deck::class,
-    Card::class], version = 1, exportSchema = true)
+    Card::class], version = 2, exportSchema = true)
 //@TypeConverters(DbConverters::class)
 abstract class DeckBuilderDatabase: RoomDatabase() {
     
@@ -35,7 +35,8 @@ abstract class DeckBuilderDatabase: RoomDatabase() {
                 DeckBuilderDatabase::class.java,
                 DatabaseConstants.DATABASE_DECK_BUILDER
             )
-            .build()
+                .fallbackToDestructiveMigration()
+                .build()
         }
     }
 }

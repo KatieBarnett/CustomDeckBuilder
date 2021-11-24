@@ -1,32 +1,31 @@
-package dev.katiebarnett.customdeckbuilder.presentation
+package dev.katiebarnett.customdeckbuilder.presentation.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.fragment.app.DialogFragment
 import dev.katiebarnett.customdeckbuilder.R
-import dev.katiebarnett.customdeckbuilder.databinding.NewGameDialogBinding
+import dev.katiebarnett.customdeckbuilder.databinding.NewDeckDialogBinding
 
-class NewGameDialog : DialogFragment() {
+class NewDeckDialog : DialogFragment() {
     
     companion object {
-        const val TAG = "NewGameDialog"
+        const val TAG = "NewDeckDialog"
     }
     
-    internal var listener: NewGameDialogListener? = null
+    internal var listener: DialogListener? = null
     
-    private lateinit var binding: NewGameDialogBinding
+    private lateinit var binding: NewDeckDialogBinding
 
-    interface NewGameDialogListener {
-        fun onDialogPositiveClick(gameName: String)
+    interface DialogListener {
+        fun onDialogPositiveClick(deckName: String)
     }
     
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            binding = NewGameDialogBinding.inflate(LayoutInflater.from(context))
+            binding = NewDeckDialogBinding.inflate(LayoutInflater.from(context))
             builder.setView(binding.root)
                 // Add action buttons
                 .setPositiveButton(R.string.game_dialog_button_save) { dialog, id ->
@@ -39,7 +38,7 @@ class NewGameDialog : DialogFragment() {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
     
-    fun setListener(listener: NewGameDialogListener) {
+    fun setListener(listener: DialogListener) {
         this.listener = listener
     }
 }
