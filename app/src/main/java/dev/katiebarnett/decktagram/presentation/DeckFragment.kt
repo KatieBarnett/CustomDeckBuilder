@@ -1,4 +1,4 @@
-package dev.katiebarnett.customdeckbuilder.presentation
+package dev.katiebarnett.decktagram.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
-import dev.katiebarnett.customdeckbuilder.R
-import dev.katiebarnett.customdeckbuilder.databinding.DeckFragmentBinding
+import dev.katiebarnett.decktagram.R
+import dev.katiebarnett.decktagram.databinding.DeckFragmentBinding
 
 @AndroidEntryPoint
 class DeckFragment : Fragment() {

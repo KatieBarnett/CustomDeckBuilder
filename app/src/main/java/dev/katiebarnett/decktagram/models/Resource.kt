@@ -1,4 +1,4 @@
-package dev.katiebarnett.customdeckbuilder.models
+package dev.katiebarnett.decktagram.models
 
 sealed class Resource<T>(open val data: T?)
 

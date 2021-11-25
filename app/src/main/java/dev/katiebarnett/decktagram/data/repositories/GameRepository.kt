@@ -1,8 +1,8 @@
-package dev.katiebarnett.customdeckbuilder.data.repositories
+package dev.katiebarnett.decktagram.data.repositories
 
-import dev.katiebarnett.customdeckbuilder.data.storage.DeckBuilderDao
-import dev.katiebarnett.customdeckbuilder.models.Deck
-import dev.katiebarnett.customdeckbuilder.models.Game
+import dev.katiebarnett.decktagram.data.storage.DeckBuilderDao
+import dev.katiebarnett.decktagram.models.Deck
+import dev.katiebarnett.decktagram.models.Game
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton

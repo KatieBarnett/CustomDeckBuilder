@@ -1,10 +1,10 @@
-package dev.katiebarnett.customdeckbuilder.presentation
+package dev.katiebarnett.decktagram.presentation
 
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.katiebarnett.customdeckbuilder.data.repositories.GameRepository
-import dev.katiebarnett.customdeckbuilder.models.Deck
-import dev.katiebarnett.customdeckbuilder.models.Game
+import dev.katiebarnett.decktagram.data.repositories.GameRepository
+import dev.katiebarnett.decktagram.models.Deck
+import dev.katiebarnett.decktagram.models.Game
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job

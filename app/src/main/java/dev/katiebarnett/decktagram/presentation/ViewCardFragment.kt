@@ -1,4 +1,4 @@
-package dev.katiebarnett.customdeckbuilder.presentation
+package dev.katiebarnett.decktagram.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
-import dev.katiebarnett.customdeckbuilder.R
-import dev.katiebarnett.customdeckbuilder.databinding.ViewCardFragmentBinding
+import dev.katiebarnett.decktagram.R
+import dev.katiebarnett.decktagram.databinding.ViewCardFragmentBinding
 
 @AndroidEntryPoint
 class ViewCardFragment : Fragment() {

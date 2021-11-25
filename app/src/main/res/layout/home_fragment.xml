@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="dev.katiebarnett.customdeckbuilder.presentation.HomeViewModel" />
+            type="dev.katiebarnett.decktagram.presentation.HomeViewModel" />
 
         <variable
             name="listItemBinding"
-            type="me.tatarka.bindingcollectionadapter2.ItemBinding&lt;dev.katiebarnett.customdeckbuilder.models.Game&gt;" />
+            type="me.tatarka.bindingcollectionadapter2.ItemBinding&lt;dev.katiebarnett.decktagram.models.Game&gt;" />
         
     </data>
     

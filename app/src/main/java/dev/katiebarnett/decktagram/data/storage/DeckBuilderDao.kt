@@ -1,8 +1,8 @@
-package dev.katiebarnett.customdeckbuilder.data.storage
+package dev.katiebarnett.decktagram.data.storage
 
 import androidx.room.*
-import dev.katiebarnett.customdeckbuilder.models.Deck
-import dev.katiebarnett.customdeckbuilder.models.Game
+import dev.katiebarnett.decktagram.models.Deck
+import dev.katiebarnett.decktagram.models.Game
 import kotlinx.coroutines.flow.Flow
 
 @Dao

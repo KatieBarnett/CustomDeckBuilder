@@ -1,4 +1,4 @@
-package dev.katiebarnett.customdeckbuilder.presentation
+package dev.katiebarnett.decktagram.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,12 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import dev.katiebarnett.customdeckbuilder.BR
-import dev.katiebarnett.customdeckbuilder.R
-import dev.katiebarnett.customdeckbuilder.databinding.HomeFragmentBinding
-import dev.katiebarnett.customdeckbuilder.models.Game
-import dev.katiebarnett.customdeckbuilder.presentation.dialogs.NewGameDialog
-import dev.katiebarnett.customdeckbuilder.presentation.util.OnItemClickListener
+import dev.katiebarnett.decktagram.BR
+import dev.katiebarnett.decktagram.R
+import dev.katiebarnett.decktagram.databinding.HomeFragmentBinding
+import dev.katiebarnett.decktagram.models.Game
+import dev.katiebarnett.decktagram.presentation.dialogs.NewGameDialog
+import dev.katiebarnett.decktagram.presentation.util.OnItemClickListener
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 
 @AndroidEntryPoint

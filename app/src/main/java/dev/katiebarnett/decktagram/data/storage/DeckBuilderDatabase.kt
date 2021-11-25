@@ -1,12 +1,12 @@
-package dev.katiebarnett.customdeckbuilder.data.storage
+package dev.katiebarnett.decktagram.data.storage
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import dev.katiebarnett.customdeckbuilder.models.Card
-import dev.katiebarnett.customdeckbuilder.models.Deck
-import dev.katiebarnett.customdeckbuilder.models.Game
+import dev.katiebarnett.decktagram.models.Card
+import dev.katiebarnett.decktagram.models.Deck
+import dev.katiebarnett.decktagram.models.Game
 
 @Database(entities = [
     Game::class,

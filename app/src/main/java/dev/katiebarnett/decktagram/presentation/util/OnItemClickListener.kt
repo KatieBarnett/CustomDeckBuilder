@@ -1,4 +1,4 @@
-package dev.katiebarnett.customdeckbuilder.presentation.util
+package dev.katiebarnett.decktagram.presentation.util
 
 interface OnItemClickListener<T> {
     fun onItemClicked(item: T)

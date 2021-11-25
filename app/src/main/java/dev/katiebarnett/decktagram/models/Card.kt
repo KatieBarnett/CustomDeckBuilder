@@ -1,8 +1,8 @@
-package dev.katiebarnett.customdeckbuilder.models
+package dev.katiebarnett.decktagram.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import dev.katiebarnett.customdeckbuilder.data.storage.DatabaseConstants
+import dev.katiebarnett.decktagram.data.storage.DatabaseConstants
 
 @Entity(tableName = DatabaseConstants.TABLE_CARDS)
 data class Card(

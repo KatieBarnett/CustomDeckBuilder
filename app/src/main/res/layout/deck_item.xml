@@ -7,11 +7,11 @@
 
         <variable
             name="item"
-            type="dev.katiebarnett.customdeckbuilder.models.Deck" />
+            type="dev.katiebarnett.decktagram.models.Deck" />
 
         <variable
             name="itemClickListener"
-            type="dev.katiebarnett.customdeckbuilder.presentation.util.OnItemClickListener" />
+            type="dev.katiebarnett.decktagram.presentation.util.OnItemClickListener" />
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout 

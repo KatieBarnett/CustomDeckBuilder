@@ -1,31 +1,31 @@
-package dev.katiebarnett.customdeckbuilder.presentation.dialogs
+package dev.katiebarnett.decktagram.presentation.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.fragment.app.DialogFragment
-import dev.katiebarnett.customdeckbuilder.R
-import dev.katiebarnett.customdeckbuilder.databinding.NewDeckDialogBinding
+import dev.katiebarnett.decktagram.R
+import dev.katiebarnett.decktagram.databinding.NewGameDialogBinding
 
-class NewDeckDialog : DialogFragment() {
+class NewGameDialog : DialogFragment() {
     
     companion object {
-        const val TAG = "NewDeckDialog"
+        const val TAG = "NewGameDialog"
     }
     
     internal var listener: DialogListener? = null
     
-    private lateinit var binding: NewDeckDialogBinding
+    private lateinit var binding: NewGameDialogBinding
 
     interface DialogListener {
-        fun onDialogPositiveClick(deckName: String)
+        fun onDialogPositiveClick(gameName: String)
     }
     
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            binding = NewDeckDialogBinding.inflate(LayoutInflater.from(context))
+            binding = NewGameDialogBinding.inflate(LayoutInflater.from(context))
             builder.setView(binding.root)
                 // Add action buttons
                 .setPositiveButton(R.string.game_dialog_button_save) { dialog, id ->

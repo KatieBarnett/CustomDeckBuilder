@@ -1,4 +1,4 @@
-package dev.katiebarnett.customdeckbuilder.data.storage
+package dev.katiebarnett.decktagram.data.storage
 
 class DatabaseConstants {
 

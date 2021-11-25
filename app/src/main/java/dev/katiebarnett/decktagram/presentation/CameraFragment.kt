@@ -1,4 +1,4 @@
-package dev.katiebarnett.customdeckbuilder.presentation
+package dev.katiebarnett.decktagram.presentation
 
 import android.Manifest
 import android.app.AlertDialog
@@ -19,8 +19,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import dev.katiebarnett.customdeckbuilder.R
-import dev.katiebarnett.customdeckbuilder.databinding.CameraFragmentBinding
+import dev.katiebarnett.decktagram.R
+import dev.katiebarnett.decktagram.databinding.CameraFragmentBinding
 
 @AndroidEntryPoint
 class CameraFragment : Fragment() {

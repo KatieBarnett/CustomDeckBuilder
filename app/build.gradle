@@ -10,7 +10,7 @@ android {
     compileSdk compile_sdk_version
 
     defaultConfig {
-        applicationId "dev.katiebarnett.customdeckbuilder"
+        applicationId "dev.katiebarnett.decktagram"
         minSdk min_sdk_version
         targetSdk compile_sdk_version
         versionCode 1

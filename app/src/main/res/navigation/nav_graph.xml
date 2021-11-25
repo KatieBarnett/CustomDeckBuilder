@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/HomeFragment"
-        android:name="dev.katiebarnett.customdeckbuilder.presentation.HomeFragment"
+        android:name="dev.katiebarnett.decktagram.presentation.HomeFragment"
         android:label="@string/home_fragment_label"
         tools:layout="@layout/home_fragment">
 
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/GameFragment"
-        android:name="dev.katiebarnett.customdeckbuilder.presentation.GameFragment"
+        android:name="dev.katiebarnett.decktagram.presentation.GameFragment"
         android:label="@string/game_fragment_label"
         tools:layout="@layout/game_fragment">
 
@@ -35,7 +35,7 @@
     
     <fragment
         android:id="@+id/DeckFragment"
-        android:name="dev.katiebarnett.customdeckbuilder.presentation.DeckFragment"
+        android:name="dev.katiebarnett.decktagram.presentation.DeckFragment"
         android:label="@string/deck_fragment_label"
         tools:layout="@layout/deck_fragment">
 
@@ -55,7 +55,7 @@
 
     <fragment
         android:id="@+id/CardsFragment"
-        android:name="dev.katiebarnett.customdeckbuilder.presentation.CardsFragment"
+        android:name="dev.katiebarnett.decktagram.presentation.CardsFragment"
         android:label="@string/cards_fragment_label"
         tools:layout="@layout/cards_fragment">
 
@@ -71,7 +71,7 @@
 
     <fragment
         android:id="@+id/ViewCardFragment"
-        android:name="dev.katiebarnett.customdeckbuilder.presentation.CardsFragment"
+        android:name="dev.katiebarnett.decktagram.presentation.CardsFragment"
         android:label="@string/view_card_fragment_label"
         tools:layout="@layout/view_card_fragment">
 
@@ -82,7 +82,7 @@
 
     <fragment
         android:id="@+id/CameraFragment"
-        android:name="dev.katiebarnett.customdeckbuilder.presentation.CameraFragment"
+        android:name="dev.katiebarnett.decktagram.presentation.CameraFragment"
         android:label="@string/camera_fragment_label"
         tools:layout="@layout/camera_fragment">
         
