@@ -9,6 +9,7 @@
     <string name="cards_fragment_label">View Cards</string>
     <string name="view_card_fragment_label">Card</string>
     <string name="camera_fragment_label">Take Photo</string>
+    <string name="settings_fragment_label">Settings</string>
     
     <!-- New Game Dialog -->
     <string name="game_dialog_name_label">Game name</string>

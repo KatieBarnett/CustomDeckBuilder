@@ -91,5 +91,13 @@
             app:argType="long"/>
 
     </fragment>
+
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="dev.katiebarnett.decktagram.presentation.SettingsFragment"
+        android:label="@string/settings_fragment_label"/>
+    
+    <action android:id="@+id/action_global_SettingsFragment"
+        app:destination="@id/SettingsFragment"/>
     
 </navigation>
