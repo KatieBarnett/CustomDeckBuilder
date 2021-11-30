@@ -1,4 +1,4 @@
-package dev.katiebarnett.decktagram.presentation
+package dev.katiebarnett.decktagram
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
