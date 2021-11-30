@@ -16,10 +16,13 @@ import dev.katiebarnett.decktagram.databinding.HomeFragmentBinding
 import dev.katiebarnett.decktagram.models.Game
 import dev.katiebarnett.decktagram.presentation.dialogs.NewGameDialog
 import dev.katiebarnett.decktagram.presentation.util.OnItemClickListener
+import dev.katiebarnett.decktagram.util.navigateSafe
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), NewGameDialog.DialogListener {
+    
+    private val navigationId = R.id.HomeFragment
     
     private lateinit var binding: HomeFragmentBinding
     
@@ -27,7 +30,7 @@ class HomeFragment : Fragment(), NewGameDialog.DialogListener {
     
     private val gameListItemClickListener = (object: OnItemClickListener<Game> {
         override fun onItemClicked(item: Game) {
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToGameFragment(gameId = item.id))
+            findNavController().navigateSafe(navigationId, HomeFragmentDirections.actionHomeFragmentToGameFragment(gameId = item.id))
         }
     })
     
@@ -60,7 +63,7 @@ class HomeFragment : Fragment(), NewGameDialog.DialogListener {
         viewModel.gameCreationResponse.observe(viewLifecycleOwner, {
             if (it != -1L) {
                 viewModel.clearGameCreationResponse()
-                findNavController().navigate(
+                findNavController().navigateSafe(navigationId,
                     HomeFragmentDirections.actionHomeFragmentToGameFragment(
                         gameId = it
                     )

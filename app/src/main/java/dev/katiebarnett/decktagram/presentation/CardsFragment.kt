@@ -13,6 +13,8 @@ import dev.katiebarnett.decktagram.databinding.CardsFragmentBinding
 @AndroidEntryPoint
 class CardsFragment : Fragment() {
     
+    private val navigationId = R.id.CardsFragment
+    
     private lateinit var binding: CardsFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

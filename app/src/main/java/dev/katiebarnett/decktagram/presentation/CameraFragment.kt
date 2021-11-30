@@ -36,6 +36,8 @@ class CameraFragment : Fragment() {
         private const val TAG = "CameraFragment"
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
     }
+    
+    private val navigationId = R.id.CameraFragment
 
     private lateinit var binding: CameraFragmentBinding
     

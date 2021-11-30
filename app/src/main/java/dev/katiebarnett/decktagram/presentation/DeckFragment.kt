@@ -11,9 +11,12 @@ import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.decktagram.R
 import dev.katiebarnett.decktagram.databinding.DeckFragmentBinding
+import dev.katiebarnett.decktagram.util.navigateSafe
 
 @AndroidEntryPoint
 class DeckFragment : Fragment() {
+
+    private val navigationId = R.id.DeckFragment
     
     private lateinit var binding: DeckFragmentBinding
 
@@ -29,7 +32,7 @@ class DeckFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.newCard.setOnClickListener {
-            findNavController().navigate(DeckFragmentDirections.actionDeckFragmentToCameraFragment(args.deckId))
+            findNavController().navigateSafe(navigationId, DeckFragmentDirections.actionDeckFragmentToCameraFragment(args.deckId))
         }
     }
 }

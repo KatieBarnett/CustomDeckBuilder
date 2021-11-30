@@ -24,6 +24,8 @@ import me.tatarka.bindingcollectionadapter2.ItemBinding
 @AndroidEntryPoint
 class GameFragment : Fragment(), NewDeckDialog.DialogListener {
     
+    private val navigationId = R.id.GameFragment
+    
     private lateinit var binding: GameFragmentBinding
 
     private val viewModel: GameViewModel by viewModels()
