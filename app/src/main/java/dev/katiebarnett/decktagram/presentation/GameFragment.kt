@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -61,6 +62,12 @@ class GameFragment : Fragment(), NewDeckDialog.DialogListener {
             dialog.setListener(this)
             dialog.show(childFragmentManager, NewDeckDialog.TAG)
         }
+
+        viewModel.game.observe(viewLifecycleOwner, {
+            it?.let {
+                (activity as AppCompatActivity).supportActionBar?.title = String.format(getString(R.string.game_fragment_title), it.name)
+            }
+        })
 
         viewModel.snackbar.observe(viewLifecycleOwner, {
             it?.let {

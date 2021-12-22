@@ -33,15 +33,17 @@ class GameViewModel @Inject constructor(
     val deckCreationResponse: LiveData<Long>
         get() = _deckCreationResponse
 
-    private val game: MutableStateFlow<Game?> = MutableStateFlow(null)
+    private val _game: MutableStateFlow<Game?> = MutableStateFlow(null)
     
-    val decks = game.filterNotNull().flatMapLatest {
+    val game = _game.asLiveData()
+    
+    val decks = _game.filterNotNull().flatMapLatest {
         gameRepository.getDecksForGame(it.id)
     }.asLiveData()
 
     fun loadGame(gameId: Long) {
         launchDataLoad { 
-            gameRepository.getGame(gameId).collect { game.value = it }
+            gameRepository.getGame(gameId).collect { _game.value = it }
         }
     }
     

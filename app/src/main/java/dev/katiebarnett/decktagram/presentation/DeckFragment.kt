@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -60,6 +61,12 @@ class DeckFragment : Fragment() {
         binding.newCard.setOnClickListener {
             findNavController().navigateSafe(navigationId, DeckFragmentDirections.actionDeckFragmentToCameraFragment(args.deckId))
         }
+        
+        viewModel.deck.observe(viewLifecycleOwner, {
+            it?.let {
+                (activity as AppCompatActivity).supportActionBar?.title = String.format(getString(R.string.deck_fragment_title), it.name)
+            }
+        })
 
         viewModel.snackbar.observe(viewLifecycleOwner, {
             it?.let {
