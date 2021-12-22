@@ -51,6 +51,5 @@ dependencies {
     }
 
     implementation libraries
-    implementation archLibraries
     kapt librariesKapt
 }

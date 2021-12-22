@@ -7,10 +7,13 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import androidx.camera.core.ImageCapture
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.katiebarnett.decktagram.R
+import dev.katiebarnett.decktagram.data.repositories.GameRepository
 import dev.katiebarnett.decktagram.data.storage.UserPreferencesManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,13 +24,26 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CameraViewModel @Inject constructor(
-    private val userPreferencesManager: UserPreferencesManager
+    private val userPreferencesManager: UserPreferencesManager,
+    private val gameRepository: GameRepository
 ) : ViewModel() {
     
     companion object {
         // TODO change this to ISO format
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
     }
+
+    private val _loading = MutableLiveData<Boolean>(false)
+    val loading: LiveData<Boolean>
+        get() = _loading
+
+    private val _snackbar = MutableLiveData<String?>()
+    val snackbar: LiveData<String?>
+        get() = _snackbar
+
+    private val _photoSaveResponse = MutableLiveData<Long>(-1)
+    val photoSaveResponse: LiveData<Long>
+        get() = _photoSaveResponse
 
     private val imageCollection =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -101,5 +117,11 @@ class CameraViewModel @Inject constructor(
             }
         }
         return null
+    }
+    
+    fun saveImageToDatabase(deckId: Long, path: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _photoSaveResponse.postValue(gameRepository.updateCard(deckId, "cardName", path))
+        }
     }
 }

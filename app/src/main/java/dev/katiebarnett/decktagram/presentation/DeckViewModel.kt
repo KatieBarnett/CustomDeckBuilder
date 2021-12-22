@@ -3,13 +3,10 @@ package dev.katiebarnett.decktagram.presentation
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.katiebarnett.decktagram.data.repositories.GameRepository
-import dev.katiebarnett.decktagram.models.Deck
-import dev.katiebarnett.decktagram.models.Game
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
@@ -17,11 +14,11 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class GameViewModel @Inject constructor(
+class DeckViewModel @Inject constructor(
     private val gameRepository: GameRepository
 ) : ViewModel() {
 
-    private val _loading = MutableLiveData<Boolean>(false)
+    private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean>
         get() = _loading
 
@@ -29,31 +26,24 @@ class GameViewModel @Inject constructor(
     val snackbar: LiveData<String?>
         get() = _snackbar
 
-    private val _deckCreationResponse = MutableLiveData<Long>(-1)
-    val deckCreationResponse: LiveData<Long>
-        get() = _deckCreationResponse
+    private val deckId: MutableStateFlow<Long?> = MutableStateFlow(null)
 
-    private val game: MutableStateFlow<Game?> = MutableStateFlow(null)
-    
-    val decks = game.filterNotNull().flatMapLatest {
-        gameRepository.getDecksForGame(it.id)
+    private val deckMap = deckId.filterNotNull().flatMapLatest {
+        gameRepository.getDeck(it)
     }.asLiveData()
 
-    fun loadGame(gameId: Long) {
-        launchDataLoad { 
-            gameRepository.getGame(gameId).collect { game.value = it }
-        }
+    val deck = Transformations.map(deckMap) {
+        it.keys.firstOrNull()
     }
     
-    fun createDeck(deckName: String, gameId: Long) {
-        val deck = Deck(name = deckName, gameId = gameId)
-        launchDataLoad {
-            _deckCreationResponse.postValue(gameRepository.updateDeck(deck))
-        }
+    val cards = Transformations.map(deckMap) {
+        it.values.firstOrNull()
     }
-
-    fun clearDeckCreationResponse() {
-        _deckCreationResponse.value = -1
+    
+    fun loadDeck(id: Long) {
+        launchDataLoad {
+            deckId.emit(id)
+        }
     }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {

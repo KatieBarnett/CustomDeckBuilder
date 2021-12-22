@@ -26,6 +26,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.decktagram.R
 import dev.katiebarnett.decktagram.databinding.CameraFragmentBinding
@@ -55,7 +56,7 @@ class CameraFragment : Fragment() {
 
     private lateinit var binding: CameraFragmentBinding
 
-    val args: CameraFragmentArgs by navArgs()
+    private val args: CameraFragmentArgs by navArgs()
     
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
@@ -67,15 +68,6 @@ class CameraFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
-        lifecycleScope.launch { 
-            requiredPermissions = if (viewModel.storeImagesInGallery) {
-                PERMISSIONS_GALLERY_STORAGE
-            } else {
-                PERMISSIONS_INTERNAL_APP_STORAGE
-            }
-            requestCameraPermission()
-        }
 
         requestPermissionLauncher =
             registerForActivityResult(
@@ -88,6 +80,15 @@ class CameraFragment : Fragment() {
                 }
             }
         cameraExecutor = Executors.newSingleThreadExecutor()
+        
+        lifecycleScope.launch { 
+            requiredPermissions = if (viewModel.storeImagesInGallery) {
+                PERMISSIONS_GALLERY_STORAGE
+            } else {
+                PERMISSIONS_INTERNAL_APP_STORAGE
+            }
+            requestCameraPermission()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -100,6 +101,18 @@ class CameraFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         
         binding.cameraCaptureButton.setOnClickListener { takePhoto() }
+
+        viewModel.snackbar.observe(viewLifecycleOwner, {
+            it?.let {
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
+            }
+        })
+
+        viewModel.photoSaveResponse.observe(viewLifecycleOwner, {
+            if (it != -1L) {
+                findNavController().navigateUp()
+            }
+        })
     }
 
     private fun requestCameraPermission() {
@@ -197,6 +210,7 @@ class CameraFragment : Fragment() {
                             }
                             path?.let {
                                 viewModel.addImageToGalleryIfRequired(_context, it)
+                                viewModel.saveImageToDatabase(args.deckId, it)
                             }
                         }
                     })
