@@ -54,6 +54,8 @@ class CameraViewModel @Inject constructor(
     
     var storeImagesInGallery: Boolean = false
     
+    var internalAppFilePath: String? = null
+    
     init {
         viewModelScope.launch {
             storeImagesInGallery = userPreferencesManager.getStoreImagesInGallery()
@@ -84,6 +86,7 @@ class CameraViewModel @Inject constructor(
                 context.filesDir
             }
             val file = File(storageDirectory, getFileName())
+            internalAppFilePath = file.absolutePath
             ImageCapture.OutputFileOptions.Builder(file)
         }
     }

@@ -207,7 +207,7 @@ class CameraFragment : Fragment() {
                             Log.d(TAG, "Photo capture succeeded: ${output.savedUri}")
                             val path = output.savedUri?.let {
                                 viewModel.getRealPathFromURI(_context, it)
-                            }
+                            } ?: viewModel.internalAppFilePath
                             path?.let {
                                 viewModel.addImageToGalleryIfRequired(_context, it)
                                 viewModel.saveImageToDatabase(args.deckId, it)
