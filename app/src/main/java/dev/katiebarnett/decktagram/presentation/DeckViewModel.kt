@@ -37,7 +37,7 @@ class DeckViewModel @Inject constructor(
     }
     
     val cards = Transformations.map(deckMap) {
-        it.values.firstOrNull()
+        it.values.firstOrNull()?.sortedByDescending { it.lastModified }
     }
     
     fun loadDeck(id: Long) {

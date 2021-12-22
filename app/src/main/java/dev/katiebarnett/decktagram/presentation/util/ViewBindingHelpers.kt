@@ -2,7 +2,10 @@ package dev.katiebarnett.decktagram.presentation.util
 
 import android.view.View
 import android.widget.ImageView
+import androidx.annotation.IntegerRes
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import java.io.File
 
@@ -25,4 +28,9 @@ fun ImageView.loadImage(url: String?) {
             load(File(url))
         }
     }
+}
+
+@BindingAdapter("columns")
+fun RecyclerView.setColumns(@IntegerRes columns: Int) {
+    layoutManager = GridLayoutManager(this.context, columns)
 }
