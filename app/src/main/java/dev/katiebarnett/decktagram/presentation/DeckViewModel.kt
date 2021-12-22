@@ -3,6 +3,7 @@ package dev.katiebarnett.decktagram.presentation
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.katiebarnett.decktagram.data.repositories.GameRepository
+import dev.katiebarnett.decktagram.models.Card
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -40,6 +41,24 @@ class DeckViewModel @Inject constructor(
         it.values.firstOrNull()?.sortedByDescending { it.lastModified }
     }
     
+    val drawnCards = MutableLiveData(listOf<Card>())
+    
+    val remainingCards = MutableLiveData(listOf<Card>())
+
+    val displayState = MutableLiveData(DeckDisplayState.NONE)
+    
+    val displayAllCards = Transformations.map(displayState) {
+        it == DeckDisplayState.ALL_CARDS
+    }
+
+    val displayDrawnCards = Transformations.map(displayState) {
+        it == DeckDisplayState.DRAWN_CARDS
+    }
+
+    val displayRemainingCards = Transformations.map(displayState) {
+        it == DeckDisplayState.REMAINING_CARDS
+    }
+    
     fun loadDeck(id: Long) {
         launchDataLoad {
             deckId.emit(id)
@@ -57,5 +76,9 @@ class DeckViewModel @Inject constructor(
                 _loading.postValue(false)
             }
         }
+    }
+    
+    enum class DeckDisplayState {
+        NONE, ALL_CARDS, DRAWN_CARDS, REMAINING_CARDS
     }
 }

@@ -26,8 +26,14 @@
     <string name="previous">Previous</string>
     
     <!-- File storage -->
-
     <string name="deck_folder_name">Deck_%s</string>
+
+
+
+    <!-- Deck display -->
+    <string name="deck_group_all">All Cards</string>
+    <string name="deck_group_drawn">Drawn Cards</string>
+    <string name="deck_group_remaining">Remaining Cards</string>
     
     
     <!-- Errors -->

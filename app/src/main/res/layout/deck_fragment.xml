@@ -13,7 +13,6 @@
             name="listItemBinding"
             type="me.tatarka.bindingcollectionadapter2.ItemBinding&lt;dev.katiebarnett.decktagram.models.Card&gt;" />
 
-
     </data>
     
     <androidx.coordinatorlayout.widget.CoordinatorLayout 
@@ -26,50 +25,88 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         
-            <TextView
-                android:id="@+id/totalCards"
+            <include
+                android:id="@+id/allCards"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                layout="@layout/card_group_view"
+                app:groupName="@{@string/deck_group_all}"
+                app:cardCount="@{viewModel.cards.size}"
+                app:expanded="@{viewModel.displayAllCards}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/cardsLeft"
+                app:layout_constraintBottom_toTopOf="@id/allCardsList"
                 app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintVertical_bias="0.0"
-                tools:text="Total Cards: #"/>
-    
-            <TextView
-                android:id="@+id/cardsLeft"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/totalCards"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/cardsDrawn"
-                tools:text="Cards Remaining: #"/>
-    
-            <TextView
-                android:id="@+id/cardsDrawn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/cardsLeft"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/cardList"
-                tools:text="Cards Drawn: #"/>
+                app:layout_constraintVertical_bias="0.0" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/cardList"
+                android:id="@+id/allCardsList"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintTop_toBottomOf="@id/cardsDrawn"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/allCards"
+                app:layout_constraintBottom_toTopOf="@id/remainingCards"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:items="@{viewModel.cards}"
                 app:itemBinding="@{listItemBinding}"
-                app:columns="@{@integer/card_columns}"/>
+                app:columns="@{@integer/card_columns}"
+                app:visibleOrGone="@{viewModel.displayAllCards}"/>
+    
+            <include
+                android:id="@+id/remainingCards"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                layout="@layout/card_group_view"
+                app:groupName="@{@string/deck_group_remaining}"
+                app:cardCount="@{viewModel.remainingCards.size}"
+                app:expanded="@{viewModel.displayRemainingCards}"
+                app:layout_constraintTop_toBottomOf="@id/allCardsList"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/remainingCardsList" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/remainingCardsList"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toBottomOf="@id/remainingCards"
+                app:layout_constraintBottom_toTopOf="@id/drawnCards"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:items="@{viewModel.remainingCards}"
+                app:itemBinding="@{listItemBinding}"
+                app:columns="@{@integer/card_columns}"
+                app:visibleOrGone="@{viewModel.displayRemainingCards}"/>
+
+            <include
+                android:id="@+id/drawnCards"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                layout="@layout/card_group_view"
+                app:groupName="@{@string/deck_group_drawn}"
+                app:cardCount="@{viewModel.drawnCards.size}"
+                app:expanded="@{viewModel.displayDrawnCards}"
+                app:layout_constraintTop_toBottomOf="@id/remainingCardsList"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/drawnCardsList" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/drawnCardsList"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toBottomOf="@id/drawnCards"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:items="@{viewModel.drawnCards}"
+                app:itemBinding="@{listItemBinding}"
+                app:columns="@{@integer/card_columns}"
+                app:visibleOrGone="@{viewModel.displayDrawnCards}"/>
             
         </androidx.constraintlayout.widget.ConstraintLayout>
     

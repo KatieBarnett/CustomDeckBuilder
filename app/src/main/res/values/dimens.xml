@@ -4,6 +4,9 @@
     <dimen name="space_half">8dp</dimen>
     
     <dimen name="fab_margin">16dp</dimen>
+
+
+    <dimen name="expand_collapse_width">20dp</dimen>
     
     <integer name="card_columns">4</integer>
     

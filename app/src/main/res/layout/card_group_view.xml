@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="groupName"
+            type="String" />
+
+        <variable
+            name="cardCount"
+            type="int" />
+
+        <variable
+            name="expanded"
+            type="boolean" />
+
+    </data>
+    
+    <androidx.constraintlayout.widget.ConstraintLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/space_half">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Group name"
+            android:text="@{groupName}"
+            android:layout_marginEnd="@dimen/space_half"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/count"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="###"
+            android:text="@{Integer.toString(cardCount)}"
+            android:layout_marginEnd="@dimen/space_half"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/name"
+            app:layout_constraintEnd_toStartOf="@id/expandCollapse"
+            app:layout_constraintBottom_toBottomOf="parent" />
+        
+        <ImageView
+            android:id="@+id/expandCollapse"
+            android:layout_width="@dimen/expand_collapse_width"
+            android:layout_height="wrap_content"
+            app:expandCollapse="@{expanded}"
+            tools:src="@drawable/ic_expand_more"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/count"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

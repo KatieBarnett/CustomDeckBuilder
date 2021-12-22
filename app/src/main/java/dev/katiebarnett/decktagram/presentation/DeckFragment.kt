@@ -66,5 +66,29 @@ class DeckFragment : Fragment() {
                 Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
             }
         })
+        
+        binding.allCards.root.setOnClickListener {
+            viewModel.displayState.value = if (viewModel.displayState.value != DeckViewModel.DeckDisplayState.ALL_CARDS) {
+                DeckViewModel.DeckDisplayState.ALL_CARDS
+            } else {
+                DeckViewModel.DeckDisplayState.NONE
+            }
+        }
+
+        binding.drawnCards.root.setOnClickListener {            
+            viewModel.displayState.value = if (viewModel.displayState.value != DeckViewModel.DeckDisplayState.DRAWN_CARDS) {
+                DeckViewModel.DeckDisplayState.DRAWN_CARDS
+            } else {
+                DeckViewModel.DeckDisplayState.NONE
+            }
+        }
+
+        binding.remainingCards.root.setOnClickListener {            
+            viewModel.displayState.value = if (viewModel.displayState.value != DeckViewModel.DeckDisplayState.REMAINING_CARDS) {
+                DeckViewModel.DeckDisplayState.REMAINING_CARDS
+            } else {
+                DeckViewModel.DeckDisplayState.NONE
+            }
+        }
     }
 }
