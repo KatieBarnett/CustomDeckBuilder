@@ -22,7 +22,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/space_half">
+        android:padding="@dimen/space_half"
+        android:background="?attr/colorSurface">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/name"
@@ -53,6 +54,7 @@
             android:layout_width="@dimen/expand_collapse_width"
             android:layout_height="wrap_content"
             app:expandCollapse="@{expanded}"
+            app:tint="@color/icon_tint"
             tools:src="@drawable/ic_expand_more"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/count"

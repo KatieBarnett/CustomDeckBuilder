@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <color name="icon_tint">@color/foreground</color>
+
+    <!-- Palette (Dracula) -->
+    <color name="background">#282A36</color>
+    <color name="foreground">#F8F8F2</color>
+    <color name="selection">#44475A</color>
+    <color name="comment">#6272A4</color>
+    <color name="red">#FF5555</color>
+    <color name="orange">#FFB86C</color>
+    <color name="yellow">#F1FA8C</color>
+    <color name="green">#50FA7B</color>
+    <color name="purple">#BD93F9</color>
+    <color name="cyan">#8BE9FD</color>
+    <color name="pink">#FF79C6</color>
+    <color name="black">#000000</color>
+    
 </resources>
