@@ -25,8 +25,13 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     
+    <!-- File storage -->
+
+    <string name="deck_folder_name">Deck_%s</string>
+    
+    
     <!-- Errors -->
-    <string name="error_camera_permission">You can\'t add new cards without enabling the camera. Please allow camera permissions from the settings screen and try again.</string>
+    <string name="error_camera_permission">You can\'t add new cards without enabling the camera &amp; storage permissions. Please allow camera permissions from the settings screen and try again.</string>
     
     <string name="error_camera_permission_settings">Settings</string>
 

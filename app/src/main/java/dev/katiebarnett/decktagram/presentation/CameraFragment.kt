@@ -16,54 +16,77 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.decktagram.R
 import dev.katiebarnett.decktagram.databinding.CameraFragmentBinding
-import java.io.File
+import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+
 
 @AndroidEntryPoint
 class CameraFragment : Fragment() {
 
     companion object {
         private const val TAG = "CameraFragment"
-        private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
+        private val PERMISSIONS_INTERNAL_APP_STORAGE = arrayOf(
+            Manifest.permission.CAMERA
+        )
+        private val PERMISSIONS_GALLERY_STORAGE = arrayOf(
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
+        )
     }
-    
+
     private val navigationId = R.id.CameraFragment
 
+    private val viewModel: CameraViewModel by viewModels()
+
     private lateinit var binding: CameraFragmentBinding
+
+    val args: CameraFragmentArgs by navArgs()
     
-    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
     private var imageCapture: ImageCapture? = null
 
-    private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
+    
+    private lateinit var requiredPermissions: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        lifecycleScope.launch { 
+            requiredPermissions = if (viewModel.storeImagesInGallery) {
+                PERMISSIONS_GALLERY_STORAGE
+            } else {
+                PERMISSIONS_INTERNAL_APP_STORAGE
+            }
+            requestCameraPermission()
+        }
 
         requestPermissionLauncher =
             registerForActivityResult(
-                ActivityResultContracts.RequestPermission()
-            ) { isGranted: Boolean ->
-                if (isGranted) {
-                    initCamera()
-                } else {
+                ActivityResultContracts.RequestMultiplePermissions()
+            ) { isGranted ->
+                if (isGranted.containsValue(false)) {
                     displayCameraPermissionError()
+                } else {
+                    initCamera()
                 }
             }
-
-//        outputDirectory = getOutputDirectory()
-
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
@@ -77,26 +100,25 @@ class CameraFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         
         binding.cameraCaptureButton.setOnClickListener { takePhoto() }
-        
-        requestCameraPermission()
     }
 
     private fun requestCameraPermission() {
-
-        context?.let {
-            // TODO: Also request storage permissions
-            context
-            when {
-                ContextCompat.checkSelfPermission(it, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> {
-                    initCamera()
-                }
-                shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
-                    displayCameraPermissionError()
-                }
-                else -> {
-                    requestPermissionLauncher.launch(Manifest.permission.CAMERA)
-                }
+        context?.let { context ->
+            val permissionsGranted = requiredPermissions.firstOrNull {
+                ContextCompat.checkSelfPermission(context, it) != PackageManager.PERMISSION_GRANTED
+            } == null
+            if (permissionsGranted) {
+                initCamera()
+                return
             }
+            val showRationale = requiredPermissions.firstOrNull {
+                shouldShowRequestPermissionRationale(it)
+            } != null
+            if (showRationale) {
+                displayCameraPermissionError()
+                return
+            }
+            requestPermissionLauncher.launch(requiredPermissions)
         }
     }
     
@@ -137,17 +159,15 @@ class CameraFragment : Fragment() {
             
             cameraProviderFuture.addListener({
                 val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-                val preview = Preview.Builder()
-                    .build()
+                val preview = Preview.Builder().build()
                     .also {
                         it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
                     }
+                imageCapture = ImageCapture.Builder().build()
                 val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
                 try {
                     cameraProvider.unbindAll()
-                    cameraProvider.bindToLifecycle(
-                        this, cameraSelector, preview
-                    )
+                    cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
                 } catch (exc: Exception) {
                     Log.e(TAG, "Use case binding failed", exc)
                 }
@@ -156,17 +176,33 @@ class CameraFragment : Fragment() {
 
     }
 
-    private fun takePhoto() {}
+    private fun takePhoto() {
+        context?.let { _context ->
+            val imageCapture = imageCapture ?: return
+            lifecycleScope.launch {
+                val outputOptions = viewModel.getOutputOptions(_context, args.deckId)
+                    .build()
+                imageCapture.takePicture(
+                    outputOptions,
+                    ContextCompat.getMainExecutor(_context),
+                    object : ImageCapture.OnImageSavedCallback {
+                        override fun onError(exc: ImageCaptureException) {
+                            Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
+                        }
 
-//    private fun getOutputDirectory(): File {
-//        context?.let {
-//            val mediaDir = it.externalMediaDirs.firstOrNull()?.let {
-//                File(it, resources.getString(R.string.app_name)).apply { mkdirs() }
-//            }
-//            return if (mediaDir != null && mediaDir.exists())
-//                mediaDir else filesDir
-//        }
-//    }
+                        override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                            Log.d(TAG, "Photo capture succeeded: ${output.savedUri}")
+                            val path = output.savedUri?.let {
+                                viewModel.getRealPathFromURI(_context, it)
+                            }
+                            path?.let {
+                                viewModel.addImageToGalleryIfRequired(_context, it)
+                            }
+                        }
+                    })
+            }
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()

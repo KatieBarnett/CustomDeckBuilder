@@ -1,12 +1,9 @@
 package dev.katiebarnett.decktagram.presentation
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.katiebarnett.decktagram.data.repositories.GameRepository
 import dev.katiebarnett.decktagram.data.storage.UserPreferencesManager
-import dev.katiebarnett.decktagram.models.Game
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
