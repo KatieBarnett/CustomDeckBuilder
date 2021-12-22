@@ -28,5 +28,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         lifecycleScope.launch {
             storeImagesInGallerySwitch?.isChecked = viewModel.getImageStorageGallery(this.coroutineContext)
         }
+
+
+        // TODO clean up unused internal images
     }
 }

@@ -27,6 +27,10 @@ class DeckViewModel @Inject constructor(
     val snackbar: LiveData<String?>
         get() = _snackbar
 
+    private val _deckDeleteResponse = MutableLiveData<Boolean>(false)
+    val deckDeleteResponse: LiveData<Boolean>
+        get() = _deckDeleteResponse
+
     private val deckId: MutableStateFlow<Long?> = MutableStateFlow(null)
 
     private val deckMap = deckId.filterNotNull().flatMapLatest {
@@ -62,6 +66,24 @@ class DeckViewModel @Inject constructor(
     fun loadDeck(id: Long) {
         launchDataLoad {
             deckId.emit(id)
+        }
+    }
+    
+    fun resetDeck() {
+        // TODO
+    }
+
+    fun deleteDeck() {
+        deck.value?.let { deckToDelete ->
+            val cardsToDelete = cards.value
+            launchDataLoad {
+                gameRepository.deleteDeck(deckToDelete)
+                cardsToDelete?.forEach { 
+                    gameRepository.deleteCard(it)
+                    // TODO clean up unused internal images
+                }
+                _deckDeleteResponse.postValue(true)
+            }
         }
     }
 

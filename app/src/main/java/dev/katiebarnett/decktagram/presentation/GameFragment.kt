@@ -1,9 +1,7 @@
 package dev.katiebarnett.decktagram.presentation
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -42,6 +40,10 @@ class GameFragment : Fragment(), NewDeckDialog.DialogListener {
     private val listItemBinding = ItemBinding.of<Deck>(BR.item, R.layout.deck_item)
         .bindExtra(BR.itemClickListener, deckListItemClickListener)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.game_fragment, container, false)
@@ -85,9 +87,32 @@ class GameFragment : Fragment(), NewDeckDialog.DialogListener {
                 )
             }
         })
+
+        viewModel.gameDeleteResponse.observe(viewLifecycleOwner, {
+            if (it) {
+                findNavController().navigateUp()
+            }
+        })
     }
 
     override fun onDialogPositiveClick(deckName: String) {
         viewModel.createDeck(deckName, args.gameId)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_game, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_reset_game -> {
+                // TODO
+            }
+            R.id.action_delete_game -> {
+                viewModel.deleteGame()
+            }
+        }
+        return true
     }
 }

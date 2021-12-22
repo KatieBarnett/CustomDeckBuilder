@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Decktagram</string>
     <string name="action_settings">Settings</string>
+    <string name="action_reset_game">Reset Game</string>
+    <string name="action_delete_game">Delete Game</string>
+    <string name="action_reset_deck">Reset Deck</string>
+    <string name="action_delete_deck">Delete Deck</string>
     
     <!-- Strings used for fragments for navigation -->
     <string name="home_fragment_label">Games</string>

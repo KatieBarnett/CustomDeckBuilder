@@ -32,7 +32,11 @@ class GameViewModel @Inject constructor(
     private val _deckCreationResponse = MutableLiveData<Long>(-1)
     val deckCreationResponse: LiveData<Long>
         get() = _deckCreationResponse
-
+    
+    private val _gameDeleteResponse = MutableLiveData<Boolean>(false)
+    val gameDeleteResponse: LiveData<Boolean>
+        get() = _gameDeleteResponse
+    
     private val _game: MutableStateFlow<Game?> = MutableStateFlow(null)
     
     val game = _game.asLiveData()
@@ -51,6 +55,21 @@ class GameViewModel @Inject constructor(
         val deck = Deck(name = deckName, gameId = gameId)
         launchDataLoad {
             _deckCreationResponse.postValue(gameRepository.updateDeck(deck))
+        }
+    }
+    
+    fun deleteGame() {
+        game.value?.let { gameToDelete ->
+            val decksToDelete = decks.value
+            launchDataLoad {
+                gameRepository.deleteGame(gameToDelete)
+                decksToDelete?.forEach {
+                    gameRepository.deleteDeck(it)
+                    // TODO delete associated cards
+                    // TODO clean up unused internal images
+                }
+                _gameDeleteResponse.postValue(true)
+            }
         }
     }
 

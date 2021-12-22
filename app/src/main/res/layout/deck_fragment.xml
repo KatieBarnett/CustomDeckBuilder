@@ -109,59 +109,14 @@
                 app:visibleOrGone="@{viewModel.displayDrawnCards}"/>
             
         </androidx.constraintlayout.widget.ConstraintLayout>
-    
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/drawSingleCard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:layout_gravity="bottom|end"
-            app:srcCompat="@android:drawable/ic_media_play" />
-    
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/drawMultipleCards"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:layout_gravity="top|end"
-            app:srcCompat="@android:drawable/ic_media_ff"
-            app:layout_anchor="@id/drawSingleCard"
-            app:layout_anchorGravity="top" />
-        
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/resetDeck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:layout_gravity="top|end"
-            app:srcCompat="@android:drawable/ic_media_previous"
-            app:layout_anchor="@id/drawMultipleCards"
-            app:layout_anchorGravity="top" />    
         
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/newCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_margin="@dimen/fab_margin"
             android:layout_gravity="bottom|end"
-            app:srcCompat="@android:drawable/ic_input_add"         
-            app:layout_anchor="@id/resetDeck"
-            app:layout_anchorGravity="top" />
-    
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/viewDeck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:layout_gravity="top|end"
-            app:srcCompat="@android:drawable/ic_menu_view"
-            app:layout_anchor="@id/newCard"
-            app:layout_anchorGravity="top" />
+            app:srcCompat="@drawable/ic_add_card"     />
     
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

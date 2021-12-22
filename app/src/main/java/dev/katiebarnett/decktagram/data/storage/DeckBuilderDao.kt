@@ -45,16 +45,8 @@ interface DeckBuilderDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg card: Card?): List<Long>
-//
-//
-//    // Cards
-//    @Query("SELECT * FROM " + DatabaseConstants.TABLE_CARDS + " WHERE deckId = :deckId ORDER BY name")
-//    fun getCardsForDeck(deckId: Long): LiveData<List<Card>>
-//
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun insert(vararg card: Card?): LiveData<List<Long>>
-//
-//    @Delete
-//    suspend fun delete(card: Card)
+
+    @Delete
+    suspend fun delete(card: Card)
     
 }

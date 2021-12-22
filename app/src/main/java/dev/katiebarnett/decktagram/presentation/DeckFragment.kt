@@ -1,9 +1,6 @@
 package dev.katiebarnett.decktagram.presentation
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -20,6 +17,8 @@ import dev.katiebarnett.decktagram.presentation.util.OnItemClickListener
 import dev.katiebarnett.decktagram.util.navigateSafe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import me.tatarka.bindingcollectionadapter2.ItemBinding
+import android.view.*
+
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -43,6 +42,10 @@ class DeckFragment : Fragment() {
     private val listItemBinding = ItemBinding.of<Card>(BR.item, R.layout.card_item)
         .bindExtra(BR.itemClickListener, cardListItemClickListener)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.deck_fragment, container, false)
@@ -97,5 +100,28 @@ class DeckFragment : Fragment() {
                 DeckViewModel.DeckDisplayState.NONE
             }
         }
+
+        viewModel.deckDeleteResponse.observe(viewLifecycleOwner, {
+            if (it) {
+                findNavController().navigateUp()
+            }
+        })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_deck, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_reset_deck -> {
+                viewModel.resetDeck()
+            }
+            R.id.action_delete_deck -> {
+                viewModel.deleteDeck()
+            }
+        }
+        return true
     }
 }
