@@ -21,17 +21,13 @@ interface DeckBuilderDao {
 
     @Delete
     suspend fun delete(game: Game)
-
-
+    
     // Decks
     @Query("SELECT * FROM " + DatabaseConstants.TABLE_DECKS + " WHERE gameIdMap = :gameId ORDER BY deckName")
     fun getDecksForGame(gameId: Long): Flow<List<Deck>>
-
-    @Query("SELECT * FROM " + DatabaseConstants.TABLE_DECKS 
-            + " JOIN " + DatabaseConstants.TABLE_CARDS + " ON " + DatabaseConstants.TABLE_DECKS + ".deckId = " + DatabaseConstants.TABLE_CARDS + ".deckIdMap"
-            + " WHERE " + DatabaseConstants.TABLE_DECKS + ".deckId = :deckId"
-    )
-    fun getDeck(deckId: Long): Flow<Map<Deck, List<Card>>>
+    
+    @Query("SELECT * FROM " + DatabaseConstants.TABLE_DECKS + " WHERE deckId = :deckId")
+    fun getDeck(deckId: Long): Flow<Deck>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg deck: Deck?): List<Long>
@@ -42,6 +38,9 @@ interface DeckBuilderDao {
     // Cards
     @Query("SELECT * FROM " + DatabaseConstants.TABLE_CARDS + " WHERE cardId = :cardId")
     fun getCard(cardId: Long): Flow<List<Card>>
+    
+    @Query("SELECT * FROM " + DatabaseConstants.TABLE_CARDS + " WHERE deckIdMap = :deckId")
+    fun getCardsForDeck(deckId: Long): Flow<List<Card>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg card: Card?): List<Long>

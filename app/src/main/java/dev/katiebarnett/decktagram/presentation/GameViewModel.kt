@@ -18,7 +18,8 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class GameViewModel @Inject constructor(
-    private val gameRepository: GameRepository
+    private val gameRepository: GameRepository,
+    private val state: SavedStateHandle
 ) : ViewModel() {
 
     private val _loading = MutableLiveData<Boolean>(false)
@@ -37,6 +38,9 @@ class GameViewModel @Inject constructor(
     val gameDeleteResponse: LiveData<Boolean>
         get() = _gameDeleteResponse
     
+    private val gameId: Long
+        get() = state.get<Long>("gameId") ?: -1
+    
     private val _game: MutableStateFlow<Game?> = MutableStateFlow(null)
     
     val game = _game.asLiveData()
@@ -45,8 +49,8 @@ class GameViewModel @Inject constructor(
         gameRepository.getDecksForGame(it.id)
     }.asLiveData()
 
-    fun loadGame(gameId: Long) {
-        launchDataLoad { 
+    init {
+        launchDataLoad {
             gameRepository.getGame(gameId).collect { _game.value = it }
         }
     }

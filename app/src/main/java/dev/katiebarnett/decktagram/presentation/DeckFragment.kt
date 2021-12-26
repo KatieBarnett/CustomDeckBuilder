@@ -1,6 +1,7 @@
 package dev.katiebarnett.decktagram.presentation
 
 import android.os.Bundle
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -14,10 +15,8 @@ import dev.katiebarnett.decktagram.R
 import dev.katiebarnett.decktagram.databinding.DeckFragmentBinding
 import dev.katiebarnett.decktagram.models.Card
 import dev.katiebarnett.decktagram.presentation.util.OnItemClickListener
-import dev.katiebarnett.decktagram.util.navigateSafe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import me.tatarka.bindingcollectionadapter2.ItemBinding
-import android.view.*
 
 
 @ExperimentalCoroutinesApi
@@ -52,8 +51,6 @@ class DeckFragment : Fragment() {
         binding.viewModel = viewModel
         binding.listItemBinding = listItemBinding
         binding.lifecycleOwner = this
-
-        viewModel.loadDeck(args.deckId)
         
         return binding.root
     }
@@ -61,13 +58,19 @@ class DeckFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        binding.newCard.setOnClickListener {
-            findNavController().navigateSafe(navigationId, DeckFragmentDirections.actionDeckFragmentToCameraFragment(args.deckId))
-        }
-        
         viewModel.deck.observe(viewLifecycleOwner, {
-            it?.let {
-                (activity as AppCompatActivity).supportActionBar?.title = String.format(getString(R.string.deck_fragment_title), it.name)
+            it?.let { deck ->
+                (activity as AppCompatActivity).supportActionBar?.title = String.format(getString(R.string.deck_fragment_title), deck.name)
+
+                binding.newCard.setOnClickListener {
+                    val dialog = CameraDialogFragment.newInstance(deck.gameId)
+                    dialog.setListener(object : CameraDialogFragment.DialogListener{
+                        override fun onDone(imagePaths: List<String>) {
+                            viewModel.saveCards(imagePaths)
+                        }
+                    })
+                    dialog.show(childFragmentManager, CameraDialogFragment.TAG)
+                }
             }
         })
 

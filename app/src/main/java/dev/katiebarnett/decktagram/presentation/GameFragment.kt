@@ -29,7 +29,7 @@ class GameFragment : Fragment(), NewDeckDialog.DialogListener {
 
     private val viewModel: GameViewModel by viewModels()
 
-    val args: GameFragmentArgs by navArgs()
+    private val args: GameFragmentArgs by navArgs()
 
     private val deckListItemClickListener = (object: OnItemClickListener<Deck> {
         override fun onItemClicked(item: Deck) {
@@ -50,9 +50,6 @@ class GameFragment : Fragment(), NewDeckDialog.DialogListener {
         binding.viewModel = viewModel
         binding.listItemBinding = listItemBinding
         binding.lifecycleOwner = this
-        
-        viewModel.loadGame(args.gameId)
-        
         return binding.root
     }
 

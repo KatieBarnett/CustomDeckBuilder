@@ -15,6 +15,6 @@ data class Card(
     @ColumnInfo(name="cardLastModified")
     var lastModified: Long = System.currentTimeMillis(),
     @ColumnInfo(name="cardName")
-    val name: String,
+    val name: String? = null,
     @ColumnInfo(name="cardImageUrl")
     val imageUrl: String)

@@ -20,6 +20,11 @@ fun View.setVisibleOrGone(text: String?) {
     visibility = if (!text.isNullOrBlank()) View.VISIBLE else View.GONE
 }
 
+@BindingAdapter("visibleOrInvisible")
+fun View.setVisibleOrInvisible(text: String?) {
+    visibility = if (!text.isNullOrBlank()) View.INVISIBLE else View.GONE
+}
+
 @BindingAdapter("loadImage")
 fun ImageView.loadImage(url: String?) {
     url?.let {

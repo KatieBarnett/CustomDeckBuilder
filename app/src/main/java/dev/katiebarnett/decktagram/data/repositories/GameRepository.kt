@@ -38,8 +38,12 @@ class GameRepository @Inject constructor(
         return deckBuilderDao.getDecksForGame(gameId)
     }
 
-    fun getDeck(id: Long): Flow<Map<Deck, List<Card>>> {
+    fun getDeck(id: Long): Flow<Deck> {
         return deckBuilderDao.getDeck(id)
+    }
+
+    fun getCardsForDeck(deckId: Long): Flow<List<Card>> {
+        return deckBuilderDao.getCardsForDeck(deckId)
     }
 
     suspend fun deleteDeck(deck: Deck) {
@@ -52,8 +56,7 @@ class GameRepository @Inject constructor(
         return primaryKey.firstOrNull() ?: throw Throwable("Error updating deck")
     }
 
-    suspend fun updateCard(deckId: Long, cardName: String, cardPath: String): Long {
-        // Add card to database
+    suspend fun updateCard(deckId: Long, cardName: String? = null, cardPath: String): Long {
         val card = Card(
             lastModified = System.currentTimeMillis(),
             name = cardName, 

@@ -25,5 +25,10 @@
     <style name="Theme.Decktagram.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Decktagram.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.Decktagram.FullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
     
 </resources>

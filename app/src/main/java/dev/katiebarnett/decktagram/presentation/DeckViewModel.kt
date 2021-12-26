@@ -4,10 +4,12 @@ import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.katiebarnett.decktagram.data.repositories.GameRepository
 import dev.katiebarnett.decktagram.models.Card
+import dev.katiebarnett.decktagram.models.Deck
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
@@ -16,7 +18,8 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class DeckViewModel @Inject constructor(
-    private val gameRepository: GameRepository
+    private val gameRepository: GameRepository,
+    private val state: SavedStateHandle
 ) : ViewModel() {
 
     private val _loading = MutableLiveData(false)
@@ -31,19 +34,16 @@ class DeckViewModel @Inject constructor(
     val deckDeleteResponse: LiveData<Boolean>
         get() = _deckDeleteResponse
 
-    private val deckId: MutableStateFlow<Long?> = MutableStateFlow(null)
+    private val deckId: Long
+        get() = state.get<Long>("deckId") ?: -1
 
-    private val deckMap = deckId.filterNotNull().flatMapLatest {
-        gameRepository.getDeck(it)
-    }.asLiveData()
+    private val _deck: MutableStateFlow<Deck?> = MutableStateFlow(null)
 
-    val deck = Transformations.map(deckMap) {
-        it.keys.firstOrNull()
-    }
+    val deck = _deck.asLiveData()
     
-    val cards = Transformations.map(deckMap) {
-        it.values.firstOrNull()?.sortedByDescending { it.lastModified }
-    }
+    val cards = _deck.filterNotNull().flatMapLatest {
+        gameRepository.getCardsForDeck(it.id)
+    }.asLiveData()
     
     val drawnCards = MutableLiveData(listOf<Card>())
     
@@ -63,9 +63,9 @@ class DeckViewModel @Inject constructor(
         it == DeckDisplayState.REMAINING_CARDS
     }
     
-    fun loadDeck(id: Long) {
+    init {
         launchDataLoad {
-            deckId.emit(id)
+            gameRepository.getDeck(deckId).collect { _deck.value = it }
         }
     }
     
@@ -83,6 +83,16 @@ class DeckViewModel @Inject constructor(
                     // TODO clean up unused internal images
                 }
                 _deckDeleteResponse.postValue(true)
+            }
+        }
+    }
+
+    fun saveCards(paths: List<String>) {
+        launchDataLoad {
+            deck.value?.id?.let {
+                paths.forEach { path ->
+                    gameRepository.updateCard(deckId = it, cardPath = path)
+                }
             }
         }
     }

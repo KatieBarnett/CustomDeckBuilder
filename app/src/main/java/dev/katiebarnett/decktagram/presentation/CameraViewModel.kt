@@ -7,13 +7,9 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import androidx.camera.core.ImageCapture
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.katiebarnett.decktagram.R
-import dev.katiebarnett.decktagram.data.repositories.GameRepository
 import dev.katiebarnett.decktagram.data.storage.UserPreferencesManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,14 +20,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CameraViewModel @Inject constructor(
-    private val userPreferencesManager: UserPreferencesManager,
-    private val gameRepository: GameRepository
+    private val userPreferencesManager: UserPreferencesManager
 ) : ViewModel() {
     
     companion object {
         // TODO change this to ISO format
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
     }
+    
+    var gameId: Long? = null
 
     private val _loading = MutableLiveData<Boolean>(false)
     val loading: LiveData<Boolean>
@@ -40,10 +37,6 @@ class CameraViewModel @Inject constructor(
     private val _snackbar = MutableLiveData<String?>()
     val snackbar: LiveData<String?>
         get() = _snackbar
-
-    private val _photoSaveResponse = MutableLiveData<Long>(-1)
-    val photoSaveResponse: LiveData<Long>
-        get() = _photoSaveResponse
 
     private val imageCollection =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -56,17 +49,37 @@ class CameraViewModel @Inject constructor(
     
     var internalAppFilePath: String? = null
     
+    private val _imageBuffer = MutableLiveData<List<String>>(listOf())
+    val imageBuffer: LiveData<List<String>>
+        get() = _imageBuffer
+    
+    val lastCapturedImage = Transformations.map(imageBuffer) {
+        it.lastOrNull()
+    }
+    
+    val imageBufferCount = Transformations.map(imageBuffer) {
+        it.size
+    }
+    
     init {
         viewModelScope.launch {
             storeImagesInGallery = userPreferencesManager.getStoreImagesInGallery()
         }
     }
     
-    fun getFileName(): String {
+    private fun getFileName(): String {
         return SimpleDateFormat(FILENAME_FORMAT, Locale.getDefault()).format(System.currentTimeMillis()) + ".jpg"
     }
+    
+    private fun getFolderName(context: Context): String {
+        return if (gameId != null) {
+            context.resources.getString(R.string.game_folder_name, gameId.toString())
+        } else {
+            context.resources.getString(R.string.default_folder_name)
+        }
+    }
 
-    fun getOutputOptions(context: Context, deckId: Long): ImageCapture.OutputFileOptions.Builder {
+    fun getOutputOptions(context: Context): ImageCapture.OutputFileOptions.Builder {
         return if (storeImagesInGallery) {
             // Device photos directory
             val resolver = context.contentResolver
@@ -78,7 +91,7 @@ class CameraViewModel @Inject constructor(
         } else {
             // Local to app directory
             val mediaDir = context.filesDir?.let {
-                File(it, context.resources.getString(R.string.deck_folder_name, deckId.toString())).apply { mkdirs() }
+                    File(it, getFolderName(context)).apply { mkdirs() }
             }
             val storageDirectory = if (mediaDir != null && mediaDir.exists()) {
                 mediaDir
@@ -122,9 +135,8 @@ class CameraViewModel @Inject constructor(
         return null
     }
     
-    fun saveImageToDatabase(deckId: Long, path: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _photoSaveResponse.postValue(gameRepository.updateCard(deckId, "cardName", path))
-        }
+    fun saveImageToBuffer(imagePath: String) {
+        val newBuffer = imageBuffer.value?.plus(imagePath) ?: listOf(imagePath)
+        _imageBuffer.postValue(newBuffer)
     }
 }
