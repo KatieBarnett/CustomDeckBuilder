@@ -74,6 +74,14 @@ class DeckViewModel @Inject constructor(
     val undoDrawCardEnabled = Transformations.map(drawnCards) {
         !it.isNullOrEmpty()
     }
+
+    val showEmpty = Transformations.map(cards) {
+        it.isEmpty()
+    }
+
+    val showContent = Transformations.map(cards) {
+        it.isNotEmpty()
+    }
     
     init {
         launchDataLoad {
@@ -138,6 +146,7 @@ class DeckViewModel @Inject constructor(
             try {
                 _loading.postValue(true)
                 block()
+                _loading.postValue(false)
             } catch (error: Throwable) {
                 _snackbar.postValue(error.message)
             } finally {

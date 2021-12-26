@@ -51,8 +51,9 @@
             app:layout_constraintRight_toLeftOf="@id/captureButton"
             app:layout_constraintBottom_toTopOf="@id/guidelineBottom" />
         
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/captureButton"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="@dimen/camera_button_size"
             android:layout_height="@dimen/camera_button_size"
             android:text="@string/camera_capture_button"
@@ -62,8 +63,9 @@
             app:layout_constraintBottom_toTopOf="@id/guidelineBottom"
             android:elevation="@dimen/elevation" />
         
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/doneButton"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="@dimen/camera_button_size"
             android:layout_height="@dimen/camera_button_size"
             android:text="@string/camera_done_button"

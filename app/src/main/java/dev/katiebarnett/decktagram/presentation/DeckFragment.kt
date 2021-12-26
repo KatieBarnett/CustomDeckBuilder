@@ -67,18 +67,12 @@ class DeckFragment : Fragment() {
         viewModel.deck.observe(viewLifecycleOwner, {
             it?.let { deck ->
                 (activity as AppCompatActivity).supportActionBar?.title = String.format(getString(R.string.deck_fragment_title), deck.name)
-
-                binding.newCard.setOnClickListener {
-                    val dialog = CameraDialogFragment.newInstance(deck.gameId)
-                    dialog.setListener(object : CameraDialogFragment.DialogListener{
-                        override fun onDone(imagePaths: List<String>) {
-                            viewModel.saveCards(imagePaths)
-                        }
-                    })
-                    dialog.show(childFragmentManager, CameraDialogFragment.TAG)
-                }
             }
         })
+        
+        binding.addCardsButton.setOnClickListener {
+            addCards()
+        }
 
         viewModel.snackbar.observe(viewLifecycleOwner, {
             it?.let {
@@ -128,6 +122,18 @@ class DeckFragment : Fragment() {
             crashlytics.setCustomKey(KEY_DECK_CARD_COUNT, it.size)
         })
     }
+    
+    fun addCards() {
+        viewModel.deck.value?.gameId?.let { gameId ->
+            val dialog = CameraDialogFragment.newInstance(gameId)
+            dialog.setListener(object : CameraDialogFragment.DialogListener {
+                override fun onDone(imagePaths: List<String>) {
+                    viewModel.saveCards(imagePaths)
+                }
+            })
+            dialog.show(childFragmentManager, CameraDialogFragment.TAG)
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_deck, menu)
@@ -136,6 +142,9 @@ class DeckFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.action_add_cards -> {
+                addCards()
+            }
             R.id.action_reset_deck -> {
                 viewModel.resetDeck()
             }

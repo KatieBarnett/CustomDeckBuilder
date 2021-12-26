@@ -4,6 +4,7 @@
     <string name="action_reset_game">Reset Game</string>
     <string name="action_delete_game">Delete Game</string>
     <string name="action_reset_deck">Reset Deck</string>
+    <string name="action_add_cards">Add Cards</string>
     <string name="action_delete_deck">Delete Deck</string>
     
     <!-- Strings used for fragments for navigation -->
@@ -41,6 +42,11 @@
     
     <string name="deck_draw_card_button">Draw Card</string>
     <string name="deck_undo_button">Undo</string>
+    
+    <string name="deck_add_cards_button">Add Cards</string>
+
+    <string name="deck_empty_text">You have not added any cards to this deck yet.</string>
+
 
     <!-- Camera Dialog -->
     <string name="camera_capture_button">Take Photo</string>
