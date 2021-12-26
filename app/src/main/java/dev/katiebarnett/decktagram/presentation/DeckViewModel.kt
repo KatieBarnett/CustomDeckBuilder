@@ -1,12 +1,10 @@
 package dev.katiebarnett.decktagram.presentation
 
 import androidx.lifecycle.*
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.katiebarnett.decktagram.data.repositories.GameRepository
 import dev.katiebarnett.decktagram.models.Card
 import dev.katiebarnett.decktagram.models.Deck
-import dev.katiebarnett.decktagram.util.CrashlyticsConstants.KEY_DECK_CARD_COUNT
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -49,6 +47,10 @@ class DeckViewModel @Inject constructor(
     
     val drawnCards = MutableLiveData(listOf<Card>())
     
+    val lastDrawnCard = Transformations.map(drawnCards) {
+        it.lastOrNull()
+    }
+    
     val remainingCards = MutableLiveData(listOf<Card>())
 
     val displayState = MutableLiveData(DeckDisplayState.NONE)
@@ -64,6 +66,14 @@ class DeckViewModel @Inject constructor(
     val displayRemainingCards = Transformations.map(displayState) {
         it == DeckDisplayState.REMAINING_CARDS
     }
+
+    val drawCardEnabled = Transformations.map(remainingCards) {
+        !it.isNullOrEmpty()
+    }
+
+    val undoDrawCardEnabled = Transformations.map(drawnCards) {
+        !it.isNullOrEmpty()
+    }
     
     init {
         launchDataLoad {
@@ -71,6 +81,22 @@ class DeckViewModel @Inject constructor(
                 _deck.value = it
                 shuffleDeck()
             }
+        }
+    }
+    
+    fun drawCard() {
+        remainingCards.value?.firstOrNull()?.let { card ->
+            remainingCards.postValue(remainingCards.value?.minus(card))
+            drawnCards.postValue(drawnCards.value?.plus(card))
+        }
+    }
+
+    fun undoDrawCard() {
+        drawnCards.value?.lastOrNull()?.let { card ->
+            drawnCards.postValue(drawnCards.value?.minus(card))
+            val newRemainingCards = remainingCards.value?.toMutableList() ?: mutableListOf()
+            newRemainingCards.add(0, card)
+            remainingCards.postValue(newRemainingCards)
         }
     }
     

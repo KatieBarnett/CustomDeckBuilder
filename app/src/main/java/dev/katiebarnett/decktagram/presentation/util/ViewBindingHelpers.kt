@@ -27,12 +27,22 @@ fun View.setVisibleOrInvisible(text: String?) {
 
 @BindingAdapter("loadImage")
 fun ImageView.loadImage(url: String?) {
-    url?.let {
+    if (!url.isNullOrBlank()) {
         if (url.startsWith("http")) {
-            load(url)
+            load(url) {
+                crossfade(true)
+                placeholder(R.mipmap.ic_launcher_foreground)
+                error(R.mipmap.ic_launcher_foreground)
+            }
         } else {
-            load(File(url))
+            load(File(url)) {
+                crossfade(true)
+                placeholder(R.mipmap.ic_launcher_foreground)
+                error(R.mipmap.ic_launcher_foreground)
+            }
         }
+    } else {
+        load(R.mipmap.ic_launcher_foreground)
     }
 }
 

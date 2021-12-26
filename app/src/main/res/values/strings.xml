@@ -38,6 +38,9 @@
     <string name="deck_group_all">All Cards</string>
     <string name="deck_group_drawn">Drawn Cards</string>
     <string name="deck_group_remaining">Remaining Cards</string>
+    
+    <string name="deck_draw_card_button">Draw Card</string>
+    <string name="deck_undo_button">Undo</string>
 
     <!-- Camera Dialog -->
     <string name="camera_capture_button">Take Photo</string>

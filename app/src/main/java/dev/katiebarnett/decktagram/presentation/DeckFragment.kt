@@ -86,6 +86,14 @@ class DeckFragment : Fragment() {
             }
         })
         
+        binding.drawCardButton.setOnClickListener { 
+            viewModel.drawCard()
+        }
+
+        binding.undoButton.setOnClickListener {
+            viewModel.undoDrawCard()
+        }
+        
         binding.allCards.root.setOnClickListener {
             viewModel.displayState.value = if (viewModel.displayState.value != DeckViewModel.DeckDisplayState.ALL_CARDS) {
                 DeckViewModel.DeckDisplayState.ALL_CARDS
