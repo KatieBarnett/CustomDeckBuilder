@@ -69,12 +69,18 @@ class DeckViewModel @Inject constructor(
         launchDataLoad {
             gameRepository.getDeck(deckId).collect { 
                 _deck.value = it
+                shuffleDeck()
             }
         }
     }
     
     fun resetDeck() {
-        // TODO
+        drawnCards.postValue(listOf())
+        shuffleDeck()
+    }
+    
+    private fun shuffleDeck() {
+        remainingCards.postValue(cards.value?.shuffled())
     }
 
     fun deleteDeck() {
