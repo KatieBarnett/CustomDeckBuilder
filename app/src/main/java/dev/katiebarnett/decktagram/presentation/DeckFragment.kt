@@ -9,14 +9,17 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.decktagram.BR
 import dev.katiebarnett.decktagram.R
 import dev.katiebarnett.decktagram.databinding.DeckFragmentBinding
 import dev.katiebarnett.decktagram.models.Card
 import dev.katiebarnett.decktagram.presentation.util.OnItemClickListener
+import dev.katiebarnett.decktagram.util.CrashlyticsConstants.KEY_DECK_CARD_COUNT
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import me.tatarka.bindingcollectionadapter2.ItemBinding
+import javax.inject.Inject
 
 
 @ExperimentalCoroutinesApi
@@ -30,6 +33,9 @@ class DeckFragment : Fragment() {
     private val viewModel: DeckViewModel by viewModels()
 
     val args: DeckFragmentArgs by navArgs()
+
+    @Inject
+    lateinit var crashlytics: FirebaseCrashlytics
 
     private val cardListItemClickListener = (object: OnItemClickListener<Card> {
         override fun onItemClicked(item: Card) {
@@ -108,6 +114,10 @@ class DeckFragment : Fragment() {
             if (it) {
                 findNavController().navigateUp()
             }
+        })
+        
+        viewModel.cards.observe(viewLifecycleOwner, {
+            crashlytics.setCustomKey(KEY_DECK_CARD_COUNT, it.size)
         })
     }
 

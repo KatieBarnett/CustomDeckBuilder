@@ -8,9 +8,12 @@ import android.os.Build
 import android.provider.MediaStore
 import androidx.camera.core.ImageCapture
 import androidx.lifecycle.*
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.katiebarnett.decktagram.R
 import dev.katiebarnett.decktagram.data.storage.UserPreferencesManager
+import dev.katiebarnett.decktagram.util.CrashlyticsConstants.KEY_CAMERA_SAVE_PHOTO_COUNT
+import dev.katiebarnett.decktagram.util.CrashlyticsConstants.KEY_STORE_IMAGES_IN_GALLERY
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -20,7 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CameraViewModel @Inject constructor(
-    private val userPreferencesManager: UserPreferencesManager
+    private val userPreferencesManager: UserPreferencesManager,
+    private val crashlytics: FirebaseCrashlytics
 ) : ViewModel() {
     
     companion object {
@@ -64,6 +68,7 @@ class CameraViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             storeImagesInGallery = userPreferencesManager.getStoreImagesInGallery()
+            crashlytics.setCustomKey(KEY_STORE_IMAGES_IN_GALLERY, storeImagesInGallery)
         }
     }
     
@@ -138,5 +143,6 @@ class CameraViewModel @Inject constructor(
     fun saveImageToBuffer(imagePath: String) {
         val newBuffer = imageBuffer.value?.plus(imagePath) ?: listOf(imagePath)
         _imageBuffer.postValue(newBuffer)
+        crashlytics.setCustomKey(KEY_CAMERA_SAVE_PHOTO_COUNT, newBuffer.size)
     }
 }

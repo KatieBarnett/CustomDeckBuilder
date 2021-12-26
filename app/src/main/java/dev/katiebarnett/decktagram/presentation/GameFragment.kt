@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.decktagram.BR
 import dev.katiebarnett.decktagram.R
@@ -16,8 +17,10 @@ import dev.katiebarnett.decktagram.databinding.GameFragmentBinding
 import dev.katiebarnett.decktagram.models.Deck
 import dev.katiebarnett.decktagram.presentation.dialogs.NewDeckDialog
 import dev.katiebarnett.decktagram.presentation.util.OnItemClickListener
+import dev.katiebarnett.decktagram.util.CrashlyticsConstants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import me.tatarka.bindingcollectionadapter2.ItemBinding
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -30,6 +33,9 @@ class GameFragment : Fragment(), NewDeckDialog.DialogListener {
     private val viewModel: GameViewModel by viewModels()
 
     private val args: GameFragmentArgs by navArgs()
+
+    @Inject
+    lateinit var crashlytics: FirebaseCrashlytics
 
     private val deckListItemClickListener = (object: OnItemClickListener<Deck> {
         override fun onItemClicked(item: Deck) {
@@ -89,6 +95,10 @@ class GameFragment : Fragment(), NewDeckDialog.DialogListener {
             if (it) {
                 findNavController().navigateUp()
             }
+        })
+
+        viewModel.decks.observe(viewLifecycleOwner, {
+            crashlytics.setCustomKey(CrashlyticsConstants.KEY_GAME_DECK_COUNT, it.size)
         })
     }
 

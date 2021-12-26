@@ -32,6 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.decktagram.R
 import dev.katiebarnett.decktagram.databinding.CameraDialogFragmentBinding
 import kotlinx.coroutines.launch
+import java.lang.RuntimeException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 

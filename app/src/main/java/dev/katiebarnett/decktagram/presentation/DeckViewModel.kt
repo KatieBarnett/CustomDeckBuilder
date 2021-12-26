@@ -1,10 +1,12 @@
 package dev.katiebarnett.decktagram.presentation
 
 import androidx.lifecycle.*
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.katiebarnett.decktagram.data.repositories.GameRepository
 import dev.katiebarnett.decktagram.models.Card
 import dev.katiebarnett.decktagram.models.Deck
+import dev.katiebarnett.decktagram.util.CrashlyticsConstants.KEY_DECK_CARD_COUNT
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -65,7 +67,9 @@ class DeckViewModel @Inject constructor(
     
     init {
         launchDataLoad {
-            gameRepository.getDeck(deckId).collect { _deck.value = it }
+            gameRepository.getDeck(deckId).collect { 
+                _deck.value = it
+            }
         }
     }
     

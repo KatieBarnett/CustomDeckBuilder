@@ -3,6 +3,7 @@ buildscript {
     ext.kotlin_version = '1.6.0'
     ext.hilt_version = "2.38.1"
     ext.nav_version = "2.3.5"
+    ext.firebase_version = "29.0.3"
 
     ext {
 
@@ -79,7 +80,12 @@ buildscript {
                 "androidx.room:room-runtime:$room_version",
                 
                 // Coil
-                "io.coil-kt:coil:$coil_version"
+                "io.coil-kt:coil:$coil_version",
+                
+                // Firebase
+                "com.google.firebase:firebase-analytics-ktx",
+                "com.google.firebase:firebase-crashlytics",
+                "com.google.firebase:firebase-analytics"
         ]
         
         librariesKapt = [
@@ -98,6 +104,8 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+        classpath 'com.google.gms:google-services:4.3.10'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

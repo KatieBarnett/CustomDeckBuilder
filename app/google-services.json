@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "400391442735",
+    "project_id": "decktagram",
+    "storage_bucket": "decktagram.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:400391442735:android:adda36f4770862515c51da",
+        "android_client_info": {
+          "package_name": "dev.katiebarnett.decktagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "400391442735-ka89cvflm09fipgnpruldtqrfeejjo75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJoRLyYlalSmgS_-6AR_Lz7ZpN7gbEWuE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "400391442735-ka89cvflm09fipgnpruldtqrfeejjo75.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
