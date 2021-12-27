@@ -31,18 +31,18 @@ fun ImageView.loadImage(url: String?) {
         if (url.startsWith("http")) {
             load(url) {
                 crossfade(true)
-                placeholder(R.mipmap.ic_launcher_foreground)
-                error(R.mipmap.ic_launcher_foreground)
+                placeholder(R.drawable.decktagram_light)
+                error(R.drawable.decktagram_light)
             }
         } else {
             load(File(url)) {
                 crossfade(true)
-                placeholder(R.mipmap.ic_launcher_foreground)
-                error(R.mipmap.ic_launcher_foreground)
+                placeholder(R.drawable.decktagram_light)
+                error(R.drawable.decktagram_light)
             }
         }
     } else {
-        load(R.mipmap.ic_launcher_foreground)
+        load(R.drawable.decktagram_light)
     }
 }
 
