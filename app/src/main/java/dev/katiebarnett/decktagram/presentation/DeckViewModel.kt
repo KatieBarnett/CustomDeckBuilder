@@ -88,6 +88,7 @@ class DeckViewModel @Inject constructor(
             gameRepository.getDeck(deckId).collect { 
                 _deck.value = it
                 shuffleDeck()
+                _loading.postValue(false)
             }
         }
     }

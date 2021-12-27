@@ -7,6 +7,8 @@
     <string name="action_delete_game">Delete Game</string>
     <string name="action_reset_deck">Reset Deck</string>
     <string name="action_add_cards">Add Cards</string>
+    <string name="action_add_game">Add Game</string>
+    <string name="action_add_deck">Add Deck</string>
     <string name="action_delete_deck">Delete Deck</string>
     
     <!-- Strings used for fragments for navigation -->
@@ -37,6 +39,14 @@
     <!-- File storage -->
     <string name="game_folder_name">Game_%s</string>
     <string name="default_folder_name">Images</string>
+
+    <!-- Main display -->
+    <string name="home_empty_text">You have not added any games yet.</string>
+    <string name="home_add_game_button">Add Game</string>
+    
+    <!-- Game display -->
+    <string name="game_empty_text">You have not added any decks to this game.</string>
+    <string name="game_add_deck_button">Add Deck</string>
 
     <!-- Deck display -->
     <string name="deck_group_all">All Cards</string>

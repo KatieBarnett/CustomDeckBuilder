@@ -27,6 +27,14 @@ class HomeViewModel @Inject constructor(
         get() = _gameCreationResponse
 
     val games: LiveData<List<Game>> = gameRepository.getAllGames().asLiveData()
+
+    val showEmpty = Transformations.map(games) {
+        it.isEmpty()
+    }
+
+    val showContent = Transformations.map(games) {
+        it.isNotEmpty()
+    }
     
     fun createGame(gameName: String) {
         val game = Game(name = gameName)
@@ -44,6 +52,7 @@ class HomeViewModel @Inject constructor(
             try {
                 _loading.postValue(true)
                 block()
+                _loading.postValue(false)
             } catch (error: Throwable) {
                 _snackbar.postValue(error.message)
             } finally {

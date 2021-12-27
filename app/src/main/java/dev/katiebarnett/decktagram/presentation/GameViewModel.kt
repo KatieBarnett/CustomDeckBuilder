@@ -49,9 +49,20 @@ class GameViewModel @Inject constructor(
         gameRepository.getDecksForGame(it.id)
     }.asLiveData()
 
+    val showEmpty = Transformations.map(decks) {
+        it.isEmpty()
+    }
+
+    val showContent = Transformations.map(decks) {
+        it.isNotEmpty()
+    }
+
     init {
         launchDataLoad {
-            gameRepository.getGame(gameId).collect { _game.value = it }
+            gameRepository.getGame(gameId).collect { 
+                _game.value = it
+                _loading.postValue(false)
+            }
         }
     }
     
@@ -86,6 +97,7 @@ class GameViewModel @Inject constructor(
             try {
                 _loading.postValue(true)
                 block()
+                _loading.postValue(false)
             } catch (error: Throwable) {
                 _snackbar.postValue(error.message)
             } finally {

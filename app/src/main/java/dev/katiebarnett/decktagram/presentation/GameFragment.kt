@@ -62,10 +62,8 @@ class GameFragment : Fragment(), NewDeckDialog.DialogListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        binding.newDeck.setOnClickListener {
-            val dialog = NewDeckDialog()
-            dialog.setListener(this)
-            dialog.show(childFragmentManager, NewDeckDialog.TAG)
+        binding.addDeckButton.setOnClickListener {
+            addDeck() 
         }
 
         viewModel.game.observe(viewLifecycleOwner, {
@@ -101,6 +99,12 @@ class GameFragment : Fragment(), NewDeckDialog.DialogListener {
             crashlytics.setCustomKey(CrashlyticsConstants.KEY_GAME_DECK_COUNT, it.size)
         })
     }
+    
+    fun addDeck() {
+        val dialog = NewDeckDialog()
+        dialog.setListener(this)
+        dialog.show(childFragmentManager, NewDeckDialog.TAG)
+    }
 
     override fun onDialogPositiveClick(deckName: String) {
         viewModel.createDeck(deckName, args.gameId)
@@ -113,6 +117,9 @@ class GameFragment : Fragment(), NewDeckDialog.DialogListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.action_add_deck -> {
+                addDeck()
+            }
             R.id.action_reset_game -> {
                 // TODO
             }

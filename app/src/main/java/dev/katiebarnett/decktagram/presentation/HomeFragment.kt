@@ -1,9 +1,7 @@
 package dev.katiebarnett.decktagram.presentation
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -43,6 +41,11 @@ class HomeFragment : Fragment(), NewGameDialog.DialogListener {
     private val listItemBinding = ItemBinding.of<Game>(BR.item, R.layout.game_item)
         .bindExtra(BR.itemClickListener, gameListItemClickListener)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+    
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment, container, false)
         binding.viewModel = viewModel
@@ -54,10 +57,8 @@ class HomeFragment : Fragment(), NewGameDialog.DialogListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        binding.newGame.setOnClickListener {
-            val dialog = NewGameDialog()
-            dialog.setListener(this)
-            dialog.show(childFragmentManager, NewGameDialog.TAG)
+        binding.addGameButton.setOnClickListener {
+            addGame()
         }
         
         viewModel.snackbar.observe(viewLifecycleOwner, {
@@ -81,8 +82,28 @@ class HomeFragment : Fragment(), NewGameDialog.DialogListener {
             crashlytics.setCustomKey(CrashlyticsConstants.KEY_GAME_COUNT, it.size)
         })
     }
+    
+    fun addGame() {
+        val dialog = NewGameDialog()
+        dialog.setListener(this)
+        dialog.show(childFragmentManager, NewGameDialog.TAG)
+    }
 
     override fun onDialogPositiveClick(gameName: String) {
         viewModel.createGame(gameName)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_home, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_add_game -> {
+                addGame()
+            }
+        }
+        return true
     }
 }

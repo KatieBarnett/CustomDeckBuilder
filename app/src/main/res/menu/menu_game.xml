@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="dev.katiebarnett.decktagram.presentation.MainActivity">
     <item
+        android:id="@+id/action_add_deck"
+        android:title="@string/action_add_deck"
+        android:icon="@drawable/ic_add_deck"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_reset_game"
         android:title="@string/action_reset_game"
         android:icon="@drawable/ic_reset"
