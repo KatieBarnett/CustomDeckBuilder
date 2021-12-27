@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Decktagram</string>
     <string name="action_settings">Settings</string>
+    <string name="action_about">About</string>
+    <string name="action_feedback">Feedback</string>
     <string name="action_reset_game">Reset Game</string>
     <string name="action_delete_game">Delete Game</string>
     <string name="action_reset_deck">Reset Deck</string>
@@ -17,6 +19,7 @@
     <string name="view_card_fragment_label">Card</string>
     <string name="camera_fragment_label">Take Photo</string>
     <string name="settings_fragment_label">Settings</string>
+    <string name="about_fragment_label">About</string>
     
     <!-- New Game Dialog -->
     <string name="game_dialog_name_label">Game name</string>
@@ -65,5 +68,9 @@
 
     <string name="error_settings">An error occurred while loading your app settings. Please try again.</string>
     <string name="error_button_negative">Cancel</string>
+    
+    <!-- About -->
+    <string name="url_feedback">https://forms.gle/tGRtd2y2P2iSXTZF8</string>
+    <string name="version_info">Version %1$s (%2$s)</string>
     
 </resources>

@@ -25,5 +25,5 @@ You can find her at:
 ## Changelog
 
 * v1.0.0 - 27th December 2021
-  * Initial release
+    * Initial release
 

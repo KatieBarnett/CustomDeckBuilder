@@ -1,6 +1,8 @@
 package dev.katiebarnett.decktagram.presentation
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -15,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.decktagram.NavGraphDirections
 import dev.katiebarnett.decktagram.R
 import dev.katiebarnett.decktagram.databinding.MainActivityBinding
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -58,6 +61,15 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> {
                 navController.navigate(NavGraphDirections.actionGlobalSettingsFragment())
+                true
+            }
+            R.id.action_about -> {
+                navController.navigate(NavGraphDirections.actionGlobalAboutFragment())
+                true
+            }
+            R.id.action_feedback -> {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_feedback)))
+                startActivity(browserIntent)
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -8,6 +8,18 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
+static def computeVersionCode() {
+    def initValue = 1
+    def process = "git rev-list HEAD --count".execute()
+    def gitVersion = process.text
+    if (gitVersion == "") {
+        return initValue
+    } else {
+        def versionCode = initValue + gitVersion.toInteger()
+        return versionCode
+    }
+}
+
 android {
     compileSdk compile_sdk_version
 
@@ -15,19 +27,27 @@ android {
         applicationId "dev.katiebarnett.decktagram"
         minSdk min_sdk_version
         targetSdk compile_sdk_version
-        versionCode 1
-        versionName "1.0"
+        versionCode computeVersionCode()
+        versionName app_version_name
+
+        // Required because of https://commonsware.com/blog/2020/10/14/android-studio-4p1-library-modules-version-code.html
+        buildConfigField ('int', 'APP_VERSION_CODE', computeVersionCode().toString())
+        buildConfigField 'String', 'APP_VERSION_NAME', "\"$app_version_name\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         debug {
-            
+            versionNameSuffix ".debug"
+            firebaseCrashlytics {
+                mappingFileUploadEnabled false
+            }
         }
         
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

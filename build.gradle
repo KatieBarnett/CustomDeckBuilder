@@ -8,6 +8,7 @@ buildscript {
     ext {
 
         // global variables
+        app_version_name = "1.0.0"
         compile_sdk_version = 31
         min_sdk_version = 21
         
@@ -27,6 +28,7 @@ buildscript {
         def preference_version = "1.1.1"
         def datastore_preference_version = "1.0.0"
         def coil_version = "1.4.0"
+        def markdown_view_version = "1.1.1"
 
         libraries = [
                 // Kotlin standard library
@@ -85,7 +87,10 @@ buildscript {
                 // Firebase
                 "com.google.firebase:firebase-analytics-ktx",
                 "com.google.firebase:firebase-crashlytics",
-                "com.google.firebase:firebase-analytics"
+                "com.google.firebase:firebase-analytics",
+                
+                // Markdown View
+                "com.github.mukeshsolanki:MarkdownView-Android:$markdown_view_version"
         ]
         
         librariesKapt = [

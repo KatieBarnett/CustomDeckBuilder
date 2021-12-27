@@ -74,6 +74,14 @@
         android:id="@+id/SettingsFragment"
         android:name="dev.katiebarnett.decktagram.presentation.SettingsFragment"
         android:label="@string/settings_fragment_label"/>
+
+    <fragment
+        android:id="@+id/AboutFragment"
+        android:name="dev.katiebarnett.decktagram.presentation.AboutFragment"
+        android:label="@string/about_fragment_label"/>
+
+    <action android:id="@+id/action_global_AboutFragment"
+        app:destination="@id/AboutFragment"/>
     
     <action android:id="@+id/action_global_SettingsFragment"
         app:destination="@id/SettingsFragment"/>
