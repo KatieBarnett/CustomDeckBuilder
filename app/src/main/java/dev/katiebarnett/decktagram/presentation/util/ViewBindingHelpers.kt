@@ -7,6 +7,8 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.size.Precision
+import coil.size.Scale
 import dev.katiebarnett.decktagram.R
 import java.io.File
 
@@ -33,12 +35,16 @@ fun ImageView.loadImage(url: String?) {
                 crossfade(true)
                 placeholder(R.drawable.decktagram_light)
                 error(R.drawable.decktagram_light)
+                precision(Precision.EXACT)
+                scale(Scale.FILL)
             }
         } else {
             load(File(url)) {
                 crossfade(true)
                 placeholder(R.drawable.decktagram_light)
                 error(R.drawable.decktagram_light)
+                precision(Precision.EXACT)
+                scale(Scale.FILL)
             }
         }
     } else {
