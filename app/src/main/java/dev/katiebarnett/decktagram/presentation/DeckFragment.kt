@@ -120,6 +120,8 @@ class DeckFragment : Fragment() {
         
         viewModel.cards.observe(viewLifecycleOwner, {
             crashlytics.setCustomKey(KEY_DECK_CARD_COUNT, it.size)
+
+            viewModel.doResetIfRequired()
         })
     }
     

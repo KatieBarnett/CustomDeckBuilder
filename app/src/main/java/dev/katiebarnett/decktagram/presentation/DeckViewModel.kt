@@ -87,7 +87,6 @@ class DeckViewModel @Inject constructor(
         launchDataLoad {
             gameRepository.getDeck(deckId).collect { 
                 _deck.value = it
-                shuffleDeck()
                 _loading.postValue(false)
             }
         }
@@ -95,17 +94,25 @@ class DeckViewModel @Inject constructor(
     
     fun drawCard() {
         remainingCards.value?.firstOrNull()?.let { card ->
-            remainingCards.postValue(remainingCards.value?.minus(card))
             drawnCards.postValue(drawnCards.value?.plus(card))
+            remainingCards.postValue(remainingCards.value?.minus(card))
         }
     }
 
     fun undoDrawCard() {
         drawnCards.value?.lastOrNull()?.let { card ->
-            drawnCards.postValue(drawnCards.value?.minus(card))
             val newRemainingCards = remainingCards.value?.toMutableList() ?: mutableListOf()
             newRemainingCards.add(0, card)
             remainingCards.postValue(newRemainingCards)
+            drawnCards.postValue(drawnCards.value?.minus(card))
+        }
+    }
+    
+    fun doResetIfRequired() {
+        if (!cards.value.isNullOrEmpty()
+            && ((drawnCards.value.isNullOrEmpty() && remainingCards.value.isNullOrEmpty()) 
+                    || ((drawnCards.value?.size ?: 0) + (remainingCards.value?.size ?: 0) != (cards.value?.size ?: 0)))) {
+            resetDeck()
         }
     }
     
