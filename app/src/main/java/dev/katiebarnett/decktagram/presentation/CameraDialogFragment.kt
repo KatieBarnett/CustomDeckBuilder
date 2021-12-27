@@ -25,11 +25,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.decktagram.NavGraphDirections
 import dev.katiebarnett.decktagram.R
 import dev.katiebarnett.decktagram.databinding.CameraDialogFragmentBinding
+import dev.katiebarnett.decktagram.util.*
 import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -73,6 +75,9 @@ class CameraDialogFragment : DialogFragment() {
 
     @Inject
     lateinit var crashlytics: FirebaseCrashlytics
+
+    @Inject
+    lateinit var analytics: FirebaseAnalytics
 
     private lateinit var binding: CameraDialogFragmentBinding
     
@@ -128,7 +133,8 @@ class CameraDialogFragment : DialogFragment() {
         
         binding.captureButton.setOnClickListener { takePhoto() }
 
-        binding.doneButton.setOnClickListener { 
+        binding.doneButton.setOnClickListener {
+            analytics.logAction(CameraDone(viewModel.imageBuffer.value?.size ?: 0))
             listener?.onDone(viewModel.imageBuffer.value ?: listOf())
             dismiss()
         }
@@ -162,6 +168,7 @@ class CameraDialogFragment : DialogFragment() {
     override fun onResume() {
         super.onResume()
         viewModel.loadSettings()
+        analytics.logScreenView(CameraScreen)
     }
 
     private fun requestCameraPermission() {
@@ -302,6 +309,7 @@ class CameraDialogFragment : DialogFragment() {
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
         val imageCount = viewModel.imageBufferCount.value ?: 0
+        analytics.logAction(CameraCancel(imageCount))
         if (imageCount > 0) {
             context?.let {
                 MaterialAlertDialogBuilder(it).setMessage(

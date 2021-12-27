@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.decktagram.BR
@@ -17,7 +18,7 @@ import dev.katiebarnett.decktagram.databinding.GameFragmentBinding
 import dev.katiebarnett.decktagram.models.Deck
 import dev.katiebarnett.decktagram.presentation.dialogs.NewDeckDialog
 import dev.katiebarnett.decktagram.presentation.util.OnItemClickListener
-import dev.katiebarnett.decktagram.util.CrashlyticsConstants
+import dev.katiebarnett.decktagram.util.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 import javax.inject.Inject
@@ -36,6 +37,9 @@ class GameFragment : Fragment(), NewDeckDialog.DialogListener {
 
     @Inject
     lateinit var crashlytics: FirebaseCrashlytics
+
+    @Inject
+    lateinit var analytics: FirebaseAnalytics
 
     private val deckListItemClickListener = (object: OnItemClickListener<Deck> {
         override fun onItemClicked(item: Deck) {
@@ -104,6 +108,7 @@ class GameFragment : Fragment(), NewDeckDialog.DialogListener {
         val dialog = NewDeckDialog()
         dialog.setListener(this)
         dialog.show(childFragmentManager, NewDeckDialog.TAG)
+        analytics.logAction(AddDeckToGame(viewModel.decks.value?.size ?: 0))
     }
 
     override fun onDialogPositiveClick(deckName: String) {
@@ -124,9 +129,15 @@ class GameFragment : Fragment(), NewDeckDialog.DialogListener {
                 // TODO
             }
             R.id.action_delete_game -> {
+                analytics.logAction(DeleteGame(viewModel.decks.value?.size ?: 0))
                 viewModel.deleteGame()
             }
         }
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        analytics.logScreenView(GameScreen)
     }
 }

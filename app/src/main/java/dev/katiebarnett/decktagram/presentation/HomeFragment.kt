@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.decktagram.BR
@@ -15,8 +16,7 @@ import dev.katiebarnett.decktagram.databinding.HomeFragmentBinding
 import dev.katiebarnett.decktagram.models.Game
 import dev.katiebarnett.decktagram.presentation.dialogs.NewGameDialog
 import dev.katiebarnett.decktagram.presentation.util.OnItemClickListener
-import dev.katiebarnett.decktagram.util.CrashlyticsConstants
-import dev.katiebarnett.decktagram.util.navigateSafe
+import dev.katiebarnett.decktagram.util.*
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 import javax.inject.Inject
 
@@ -31,6 +31,9 @@ class HomeFragment : Fragment(), NewGameDialog.DialogListener {
 
     @Inject 
     lateinit var crashlytics: FirebaseCrashlytics
+
+    @Inject
+    lateinit var analytics: FirebaseAnalytics
     
     private val gameListItemClickListener = (object: OnItemClickListener<Game> {
         override fun onItemClicked(item: Game) {
@@ -87,6 +90,7 @@ class HomeFragment : Fragment(), NewGameDialog.DialogListener {
         val dialog = NewGameDialog()
         dialog.setListener(this)
         dialog.show(childFragmentManager, NewGameDialog.TAG)
+        analytics.logAction(AddGame(viewModel.games.value?.size ?: 0))
     }
 
     override fun onDialogPositiveClick(gameName: String) {
@@ -105,5 +109,10 @@ class HomeFragment : Fragment(), NewGameDialog.DialogListener {
             }
         }
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        analytics.logScreenView(HomeScreen)
     }
 }

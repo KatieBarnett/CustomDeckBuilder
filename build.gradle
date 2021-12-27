@@ -89,7 +89,6 @@ buildscript {
                 // Firebase
                 "com.google.firebase:firebase-analytics-ktx",
                 "com.google.firebase:firebase-crashlytics",
-                "com.google.firebase:firebase-analytics",
                 
                 // Markdown View
                 "com.github.mukeshsolanki:MarkdownView-Android:$markdown_view_version"

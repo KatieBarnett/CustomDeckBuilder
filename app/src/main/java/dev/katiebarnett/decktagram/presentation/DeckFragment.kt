@@ -7,8 +7,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.decktagram.BR
@@ -16,12 +16,14 @@ import dev.katiebarnett.decktagram.R
 import dev.katiebarnett.decktagram.databinding.DeckFragmentBinding
 import dev.katiebarnett.decktagram.models.Card
 import dev.katiebarnett.decktagram.presentation.util.OnItemClickListener
+import dev.katiebarnett.decktagram.util.*
 import dev.katiebarnett.decktagram.util.CrashlyticsConstants.KEY_DECK_CARD_COUNT
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 import javax.inject.Inject
 
-
+@androidx.camera.core.ExperimentalUseCaseGroup
+@androidx.camera.lifecycle.ExperimentalUseCaseGroupLifecycle
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class DeckFragment : Fragment() {
@@ -32,10 +34,11 @@ class DeckFragment : Fragment() {
 
     private val viewModel: DeckViewModel by viewModels()
 
-    val args: DeckFragmentArgs by navArgs()
-
     @Inject
     lateinit var crashlytics: FirebaseCrashlytics
+
+    @Inject
+    lateinit var analytics: FirebaseAnalytics
 
     private val cardListItemClickListener = (object: OnItemClickListener<Card> {
         override fun onItemClicked(item: Card) {
@@ -80,11 +83,13 @@ class DeckFragment : Fragment() {
             }
         })
         
-        binding.drawCardButton.setOnClickListener { 
+        binding.drawCardButton.setOnClickListener {
+            analytics.logAction(DrawCard)
             viewModel.drawCard()
         }
 
         binding.undoButton.setOnClickListener {
+            analytics.logAction(UndoDrawCard)
             viewModel.undoDrawCard()
         }
         
@@ -94,6 +99,7 @@ class DeckFragment : Fragment() {
             } else {
                 DeckViewModel.DeckDisplayState.NONE
             }
+            analytics.logAction(OpenAllCards(viewModel.cards.value?.size ?: 0, viewModel.drawnCards.value?.size ?: 0, viewModel.remainingCards.value?.size ?: 0))
         }
 
         binding.drawnCards.root.setOnClickListener {            
@@ -102,6 +108,7 @@ class DeckFragment : Fragment() {
             } else {
                 DeckViewModel.DeckDisplayState.NONE
             }
+            analytics.logAction(OpenDrawnCards(viewModel.cards.value?.size ?: 0, viewModel.drawnCards.value?.size ?: 0, viewModel.remainingCards.value?.size ?: 0))
         }
 
         binding.remainingCards.root.setOnClickListener {            
@@ -110,6 +117,7 @@ class DeckFragment : Fragment() {
             } else {
                 DeckViewModel.DeckDisplayState.NONE
             }
+            analytics.logAction(OpenRemainingCards(viewModel.cards.value?.size ?: 0, viewModel.drawnCards.value?.size ?: 0, viewModel.remainingCards.value?.size ?: 0))
         }
 
         viewModel.deckDeleteResponse.observe(viewLifecycleOwner, {
@@ -134,6 +142,7 @@ class DeckFragment : Fragment() {
                 }
             })
             dialog.show(childFragmentManager, CameraDialogFragment.TAG)
+            analytics.logAction(AddCardsToDeck(viewModel.cards.value?.size ?: 0))
         }
     }
 
@@ -148,12 +157,19 @@ class DeckFragment : Fragment() {
                 addCards()
             }
             R.id.action_reset_deck -> {
+                analytics.logAction(ResetDeck(viewModel.cards.value?.size ?: 0))
                 viewModel.resetDeck()
             }
             R.id.action_delete_deck -> {
+                analytics.logAction(DeleteDeck(viewModel.cards.value?.size ?: 0))
                 viewModel.deleteDeck()
             }
         }
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        analytics.logScreenView(DeckScreen)
     }
 }

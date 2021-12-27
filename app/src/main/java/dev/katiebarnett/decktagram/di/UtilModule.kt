@@ -1,6 +1,9 @@
 package dev.katiebarnett.decktagram.di
 
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,5 +18,11 @@ class UtilModule {
     @Provides
     fun provideCrashlytics(): FirebaseCrashlytics {
         return FirebaseCrashlytics.getInstance()
+    }
+
+    @Singleton
+    @Provides
+    fun provideAnalytics(): FirebaseAnalytics {
+        return Firebase.analytics
     }
 }

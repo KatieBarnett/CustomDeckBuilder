@@ -13,10 +13,14 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.decktagram.NavGraphDirections
 import dev.katiebarnett.decktagram.R
 import dev.katiebarnett.decktagram.databinding.MainActivityBinding
+import dev.katiebarnett.decktagram.util.FeedbackMenuItem
+import dev.katiebarnett.decktagram.util.logAction
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -26,13 +30,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: MainActivityBinding
     private lateinit var navController: NavController
 
+    @Inject
+    lateinit var analytics: FirebaseAnalytics
+
     // TODO move to dagger?
     private val USER_PREFERENCES_NAME = "user_preferences"
 
     private val Context.dataStore by preferencesDataStore(
         name = USER_PREFERENCES_NAME
     )
-    
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +76,7 @@ class MainActivity : AppCompatActivity() {
             R.id.action_feedback -> {
                 val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_feedback)))
                 startActivity(browserIntent)
+                analytics.logAction(FeedbackMenuItem)
                 true
             }
             else -> super.onOptionsItemSelected(item)

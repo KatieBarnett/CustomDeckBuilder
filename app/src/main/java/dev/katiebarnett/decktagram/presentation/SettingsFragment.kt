@@ -5,10 +5,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.ListPreference
 import androidx.preference.SwitchPreferenceCompat
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.decktagram.R
+import dev.katiebarnett.decktagram.util.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -17,6 +20,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private val viewModel: SettingsViewModel by viewModels()
 
+    @Inject
+    lateinit var analytics: FirebaseAnalytics
+
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
 
@@ -24,6 +30,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val storeImagesInGallerySwitch: SwitchPreferenceCompat? = findPreference("imageStorageGallery")
         storeImagesInGallerySwitch?.setOnPreferenceChangeListener { preference, newValue ->
             viewModel.setImageStorageGallery(newValue as Boolean)
+            analytics.logAction(SetImageStoreInGallery(newValue))
             true
         }
         lifecycleScope.launch {
@@ -34,6 +41,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val imageQualityListPreference: ListPreference? = findPreference("imageQuality")
         imageQualityListPreference?.setOnPreferenceChangeListener { preference, newValue ->
             viewModel.setImageQuality(newValue as String)
+            analytics.logAction(SetImageQuality(newValue))
             true
         }
         lifecycleScope.launch {
@@ -42,5 +50,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
 
         // TODO clean up unused internal images
+    }
+
+    override fun onResume() {
+        super.onResume()
+        analytics.logScreenView(SettingsScreen)
     }
 }

@@ -6,15 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.decktagram.BuildConfig
 import dev.katiebarnett.decktagram.R
 import dev.katiebarnett.decktagram.databinding.AboutFragmentBinding
+import dev.katiebarnett.decktagram.util.AboutScreen
+import dev.katiebarnett.decktagram.util.logScreenView
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AboutFragment : Fragment() {
     
     private lateinit var binding: AboutFragmentBinding
+
+    @Inject
+    lateinit var analytics: FirebaseAnalytics
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.about_fragment, container, false)
@@ -27,7 +34,11 @@ class AboutFragment : Fragment() {
         binding.markdownView.isOpenUrlInBrowser = true
         binding.markdownView.loadMarkdownFromAssets("About.md")
         
-        binding.version.text = getString(R.string.version_info, BuildConfig.APP_VERSION_NAME, BuildConfig.APP_VERSION_CODE)
+        binding.version.text = getString(R.string.version_info, BuildConfig.APP_VERSION_NAME, BuildConfig.APP_VERSION_CODE.toString())
     }
-    
+
+    override fun onResume() {
+        super.onResume()
+        analytics.logScreenView(AboutScreen)
+    }
 }
