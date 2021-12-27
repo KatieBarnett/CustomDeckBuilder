@@ -24,7 +24,7 @@
 
         <androidx.camera.view.PreviewView
             android:id="@+id/viewFinder"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -43,13 +43,13 @@
         <ImageView
             android:id="@+id/lastCaptured"
             android:layout_width="@dimen/camera_last_captured_size"
-            android:layout_height="@dimen/camera_last_captured_size"
+            android:layout_height="0dp"
             tools:src="@mipmap/ic_launcher_foreground"
             app:loadImage="@{viewModel.lastCapturedImage}"
-            app:layout_constraintTop_toBottomOf="@id/barrier"
+            app:layout_constraintTop_toTopOf="@id/captureButton"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/captureButton"
-            app:layout_constraintBottom_toTopOf="@id/guidelineBottom" />
+            app:layout_constraintBottom_toBottomOf="@id/captureButton" />
         
         <com.google.android.material.button.MaterialButton
             android:id="@+id/captureButton"
@@ -57,11 +57,11 @@
             android:layout_width="@dimen/camera_button_size"
             android:layout_height="@dimen/camera_button_size"
             android:text="@string/camera_capture_button"
+            android:layout_marginTop="@dimen/space_half"
             app:layout_constraintTop_toBottomOf="@id/barrier"
             app:layout_constraintLeft_toRightOf="@id/lastCaptured"
             app:layout_constraintRight_toLeftOf="@id/doneButton"
-            app:layout_constraintBottom_toTopOf="@id/guidelineBottom"
-            android:elevation="@dimen/elevation" />
+            app:layout_constraintBottom_toTopOf="@id/guidelineBottom"/>
         
         <com.google.android.material.button.MaterialButton
             android:id="@+id/doneButton"
@@ -69,11 +69,22 @@
             android:layout_width="@dimen/camera_button_size"
             android:layout_height="@dimen/camera_button_size"
             android:text="@string/camera_done_button"
+            android:layout_marginTop="@dimen/space_half"
             app:layout_constraintTop_toBottomOf="@id/barrier"
             app:layout_constraintLeft_toRightOf="@id/captureButton"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/guidelineBottom"
-            android:elevation="@dimen/elevation" />
+            app:layout_constraintBottom_toTopOf="@id/guidelineBottom"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/settingsButton"
+            android:src="@drawable/ic_settings"
+            android:background="?android:selectableItemBackground"
+            android:layout_width="@dimen/camera_settings_button_size"
+            android:layout_height="@dimen/camera_settings_button_size"
+            android:layout_margin="@dimen/space_half"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+        
         
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

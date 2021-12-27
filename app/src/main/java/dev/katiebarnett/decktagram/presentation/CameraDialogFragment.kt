@@ -16,25 +16,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.AndroidEntryPoint
+import dev.katiebarnett.decktagram.NavGraphDirections
 import dev.katiebarnett.decktagram.R
 import dev.katiebarnett.decktagram.databinding.CameraDialogFragmentBinding
 import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import javax.inject.Inject
 
-
+@androidx.camera.core.ExperimentalUseCaseGroup
+@androidx.camera.lifecycle.ExperimentalUseCaseGroupLifecycle
 @AndroidEntryPoint
 class CameraDialogFragment : DialogFragment() {
 
@@ -69,6 +71,9 @@ class CameraDialogFragment : DialogFragment() {
 
     private val viewModel: CameraViewModel by viewModels()
 
+    @Inject
+    lateinit var crashlytics: FirebaseCrashlytics
+
     private lateinit var binding: CameraDialogFragmentBinding
     
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
@@ -96,15 +101,6 @@ class CameraDialogFragment : DialogFragment() {
                 }
             }
         cameraExecutor = Executors.newSingleThreadExecutor()
-        
-        lifecycleScope.launch { 
-            requiredPermissions = if (viewModel.storeImagesInGallery) {
-                PERMISSIONS_GALLERY_STORAGE
-            } else {
-                PERMISSIONS_INTERNAL_APP_STORAGE
-            }
-            requestCameraPermission()
-        }
     }
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -142,6 +138,30 @@ class CameraDialogFragment : DialogFragment() {
                 Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
             }
         })
+
+        binding.settingsButton.setOnClickListener {
+            findNavController().navigate(NavGraphDirections.actionGlobalSettingsFragment())
+        }
+
+        viewModel.storeImagesInGallery.observe(viewLifecycleOwner, {
+            lifecycleScope.launch {
+                requiredPermissions = if (it) {
+                    PERMISSIONS_GALLERY_STORAGE
+                } else {
+                    PERMISSIONS_INTERNAL_APP_STORAGE
+                }
+                requestCameraPermission()
+            }
+        })
+        
+        viewModel.targetSize.observe(viewLifecycleOwner, {
+            initCamera()
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadSettings()
     }
 
     private fun requestCameraPermission() {
@@ -176,6 +196,16 @@ class CameraDialogFragment : DialogFragment() {
                 }.create().show()
         } ?: throw IllegalStateException("Context cannot be null")
     }
+    
+    private fun showGenericError() {
+        context?.let {
+            AlertDialog.Builder(it).setMessage(R.string.error_camera_generic)
+                .setNeutralButton(R.string.error_button_neutral) { _, _ ->
+                    dismiss()
+                    this.dismiss()
+                }.create().show()
+        } ?: throw IllegalStateException("Context cannot be null")
+    }
 
     private fun navigateToAppSystemSettings() {
         context?.let {
@@ -186,6 +216,7 @@ class CameraDialogFragment : DialogFragment() {
             try {
                 it.startActivity(intent)
             } catch (e: ActivityNotFoundException) {
+                crashlytics.recordException(e)
                 AlertDialog.Builder(it).setMessage(R.string.error_settings)
                     .setNegativeButton(R.string.error_button_negative) { _, _ ->
                         dismiss()
@@ -193,25 +224,42 @@ class CameraDialogFragment : DialogFragment() {
             }
         } ?: throw IllegalStateException("Context cannot be null")
     }
-    
-    private fun initCamera() {
 
+    private fun initCamera() {
         context?.let {
             val cameraProviderFuture = ProcessCameraProvider.getInstance(it)
-            
             cameraProviderFuture.addListener({
+                val targetSize = viewModel.targetSize.value
                 val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-                val preview = Preview.Builder().build()
+                val previewBuilder = Preview.Builder()
+                targetSize?.let {
+                    previewBuilder.setTargetResolution(targetSize)
+                }
+                val preview = previewBuilder.build()
                     .also {
                         it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
                     }
-                imageCapture = ImageCapture.Builder().build()
+                val imageCaptureBuilder = ImageCapture.Builder()
+                targetSize?.let {
+                    imageCaptureBuilder.setTargetResolution(targetSize)
+                }
+                imageCapture = imageCaptureBuilder.build()
                 val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+                val useCaseGroupBuilder = UseCaseGroup.Builder()
+                    .addUseCase(preview)
+                imageCapture?.let {
+                    useCaseGroupBuilder.addUseCase(it)
+                }
+                binding.viewFinder.viewPort?.let {
+                    useCaseGroupBuilder.setViewPort(it)
+                }
                 try {
                     cameraProvider.unbindAll()
-                    cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
-                } catch (exc: Exception) {
-                    Log.e(TAG, "Use case binding failed", exc)
+                    cameraProvider.bindToLifecycle(this, cameraSelector, useCaseGroupBuilder.build())
+                } catch (e: Exception) {
+                    crashlytics.recordException(e)
+                    Log.e(TAG, "Use case binding failed", e)
+                    showGenericError()
                 }
             }, ContextCompat.getMainExecutor(it))
         }
@@ -227,8 +275,10 @@ class CameraDialogFragment : DialogFragment() {
                     outputOptions,
                     ContextCompat.getMainExecutor(_context),
                     object : ImageCapture.OnImageSavedCallback {
-                        override fun onError(exc: ImageCaptureException) {
-                            Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
+                        override fun onError(e: ImageCaptureException) {
+                            Log.e(TAG, "Photo capture failed: ${e.message}", e)
+                            crashlytics.recordException(e)
+                            showGenericError()
                         }
 
                         override fun onImageSaved(output: ImageCapture.OutputFileResults) {
@@ -236,9 +286,12 @@ class CameraDialogFragment : DialogFragment() {
                             val path = output.savedUri?.let {
                                 viewModel.getRealPathFromURI(_context, it)
                             } ?: viewModel.internalAppFilePath
-                            path?.let {
-                                viewModel.addImageToGalleryIfRequired(_context, it)
-                                viewModel.saveImageToBuffer(it)
+                            if (path != null) {
+                                viewModel.addImageToGalleryIfRequired(_context, path)
+                                viewModel.saveImageToBuffer(path)
+                            } else {
+                                crashlytics.recordException(RuntimeException("Image path is null"))
+                                showGenericError()
                             }
                         }
                     })

@@ -1,0 +1,19 @@
+<resources>
+
+    <string-array name="setting_image_quality_entries">
+        <item>Largest available</item>
+        <item>1920x1080</item>
+        <item>1280x720</item>
+        <item>640x480 (default)</item>
+        <item>320x240</item>
+    </string-array>
+
+    <string-array name="setting_image_quality_values">
+        <item></item>
+        <item>1920,1080</item>
+        <item>1280,720</item>
+        <item>640,480</item>
+        <item>320,240</item>
+    </string-array>
+    
+</resources>

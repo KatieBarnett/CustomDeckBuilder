@@ -9,6 +9,7 @@
 
     <dimen name="camera_button_size">100dp</dimen>
     <dimen name="camera_last_captured_size">100dp</dimen>
+    <dimen name="camera_settings_button_size">30dp</dimen>
 
     <dimen name="deck_draw_card_button_size">100dp</dimen>
     <dimen name="deck_undo_button_size">100dp</dimen>

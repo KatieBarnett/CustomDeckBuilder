@@ -6,13 +6,17 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Size
 import androidx.camera.core.ImageCapture
 import androidx.lifecycle.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.katiebarnett.decktagram.R
 import dev.katiebarnett.decktagram.data.storage.UserPreferencesManager
+import dev.katiebarnett.decktagram.models.ImageQuality
+import dev.katiebarnett.decktagram.models.ImageQuality.Companion.DEVICE_DEFAULT
 import dev.katiebarnett.decktagram.util.CrashlyticsConstants.KEY_CAMERA_SAVE_PHOTO_COUNT
+import dev.katiebarnett.decktagram.util.CrashlyticsConstants.KEY_IMAGE_QUALITY
 import dev.katiebarnett.decktagram.util.CrashlyticsConstants.KEY_STORE_IMAGES_IN_GALLERY
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,7 +53,19 @@ class CameraViewModel @Inject constructor(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         }
     
-    var storeImagesInGallery: Boolean = false
+    val _storeImagesInGallery = MutableLiveData(false)
+    val storeImagesInGallery: LiveData<Boolean>
+        get() = _storeImagesInGallery
+
+    private val imageQuality = MutableLiveData(ImageQuality())
+    
+    val targetSize = Transformations.map(imageQuality) {
+        if (it.ratioHeight == DEVICE_DEFAULT || it.ratioWidth == DEVICE_DEFAULT) {
+            null
+        } else {
+            Size(it.ratioWidth, it.ratioHeight)
+        }
+    }
     
     var internalAppFilePath: String? = null
     
@@ -65,10 +81,12 @@ class CameraViewModel @Inject constructor(
         it.size
     }
     
-    init {
+    fun loadSettings() {
         viewModelScope.launch {
-            storeImagesInGallery = userPreferencesManager.getStoreImagesInGallery()
-            crashlytics.setCustomKey(KEY_STORE_IMAGES_IN_GALLERY, storeImagesInGallery)
+            _storeImagesInGallery.postValue(userPreferencesManager.getStoreImagesInGallery())
+            crashlytics.setCustomKey(KEY_STORE_IMAGES_IN_GALLERY, storeImagesInGallery.value ?: false)
+            imageQuality.postValue(userPreferencesManager.getImageQuality())
+            crashlytics.setCustomKey(KEY_IMAGE_QUALITY, imageQuality.toString())
         }
     }
     
@@ -85,7 +103,7 @@ class CameraViewModel @Inject constructor(
     }
 
     fun getOutputOptions(context: Context): ImageCapture.OutputFileOptions.Builder {
-        return if (storeImagesInGallery) {
+        return if (storeImagesInGallery.value == true) {
             // Device photos directory
             val resolver = context.contentResolver
             
@@ -112,7 +130,7 @@ class CameraViewModel @Inject constructor(
     fun addImageToGalleryIfRequired(context: Context, filePath: String) {
         viewModelScope.launch(Dispatchers.IO) {
             // Only expose to gallery if we are storing the image in the gallery
-            if (storeImagesInGallery) {
+            if (storeImagesInGallery.value == true) {
                 val file = File(filePath)
                 if (file.exists()) {
                     MediaScannerConnection.scanFile(context, arrayOf(file.toString()), null, null)

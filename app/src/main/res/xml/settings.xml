@@ -4,6 +4,13 @@
 
     <SwitchPreferenceCompat
         app:key="imageStorageGallery"
-        app:title="Store images in device gallery"/>
+        app:title="@string/setting_image_storage_gallery"/>
+
+    <ListPreference
+        app:key="imageQuality"
+        app:title="@string/setting_image_quality"
+        app:summary="@string/setting_image_quality_summary"
+        app:entries="@array/setting_image_quality_entries"
+        app:entryValues="@array/setting_image_quality_values"/>
 
 </PreferenceScreen>

@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.katiebarnett.decktagram.models.ImageQuality
 import dev.katiebarnett.decktagram.models.PreferencesKeys
 import dev.katiebarnett.decktagram.models.UserPreferences
 import kotlinx.coroutines.flow.Flow
@@ -48,5 +49,15 @@ class UserPreferencesManager @Inject constructor(
 
     suspend fun getStoreImagesInGallery(): Boolean {
         return userPreferencesFlow.first().storeImagesInGallery
+    }
+
+    suspend fun updateImageQuality(imageQuality: ImageQuality) {
+        context.userPreferencesDataStore.edit { preferences ->
+            preferences[PreferencesKeys.IMAGE_QUALITY] = imageQuality.toString()
+        }
+    }
+
+    suspend fun getImageQuality(): ImageQuality {
+        return userPreferencesFlow.first().imageQuality
     }
 }
