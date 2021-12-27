@@ -26,6 +26,7 @@ buildscript {
         def camerax_version = "1.0.2"
         def core_ktx_version = "1.7.0"
         def preference_version = "1.1.1"
+        def preference_fix_version = "1.1.0"
         def datastore_preference_version = "1.0.0"
         def coil_version = "1.4.0"
         def markdown_view_version = "1.1.1"
@@ -74,6 +75,7 @@ buildscript {
                 
                 // Settings 
                 "androidx.preference:preference:$preference_version",
+                "com.takisoft.preferencex:preferencex:$preference_fix_version",
                 "androidx.datastore:datastore-preferences:$datastore_preference_version",
 
                 // Room for database

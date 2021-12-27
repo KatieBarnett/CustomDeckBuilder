@@ -1,10 +1,10 @@
 package dev.katiebarnett.decktagram.presentation.dialogs
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dev.katiebarnett.decktagram.R
 import dev.katiebarnett.decktagram.databinding.NewGameDialogBinding
 
@@ -24,7 +24,7 @@ class NewGameDialog : DialogFragment() {
     
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val builder = AlertDialog.Builder(it)
+            val builder = MaterialAlertDialogBuilder(it)
             binding = NewGameDialogBinding.inflate(LayoutInflater.from(context))
             builder.setView(binding.root)
                 // Add action buttons

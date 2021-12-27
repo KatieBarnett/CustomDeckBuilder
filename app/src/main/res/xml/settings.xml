@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <com.takisoft.preferencex.PreferenceCategory
+        app:title="@string/setting_image_category"
+        app:iconSpaceReserved="false">
 
-    <SwitchPreferenceCompat
+    <com.takisoft.preferencex.SwitchPreferenceCompat
         app:key="imageStorageGallery"
-        app:title="@string/setting_image_storage_gallery"/>
+        app:title="@string/setting_image_storage_gallery"
+        app:iconSpaceReserved="false"/>
 
     <ListPreference
         app:key="imageQuality"
         app:title="@string/setting_image_quality"
         app:summary="@string/setting_image_quality_summary"
         app:entries="@array/setting_image_quality_entries"
-        app:entryValues="@array/setting_image_quality_values"/>
+        app:entryValues="@array/setting_image_quality_values"
+        app:iconSpaceReserved="false"/>
+        
+    </com.takisoft.preferencex.PreferenceCategory>
 
 </PreferenceScreen>

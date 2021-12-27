@@ -14,7 +14,11 @@
         <item name="colorError">@color/red</item>
         <item name="colorOnError">@color/foreground</item>
         <item name="android:textColor">@color/foreground</item>
+        <item name="android:textColorPrimary">@color/foreground</item>
+        <item name="android:textColorSecondary">@color/comment</item>
         <item name="android:statusBarColor" tools:targetApi="l">@color/background</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.Decktagram.MaterialAlertDialog</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.Decktagram.MaterialAlertDialog</item>
     </style>
 
     <style name="Theme.Decktagram.NoActionBar">
@@ -24,11 +28,21 @@
 
     <style name="Theme.Decktagram.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.Decktagram.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.Decktagram.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
 
     <style name="Theme.Decktagram.FullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="android:windowBackground">@color/background</item>
         <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="ThemeOverlay.Decktagram.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorPrimary">@color/purple</item>
+        <item name="colorSecondary">@color/cyan</item>
+        <item name="colorSurface">@color/selection</item>
+        <item name="colorOnSurface">@color/foreground</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="android:textColor">@color/foreground</item>
+        <item name="android:textColorSecondary">@color/comment</item>
     </style>
     
 </resources>

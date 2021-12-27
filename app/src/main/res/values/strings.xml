@@ -83,9 +83,10 @@ x
     <string name="error_button_neutral">OK</string>
 
     <!-- Settings -->
+    <string name="setting_image_category">Image Settings</string>
     <string name="setting_image_storage_gallery">Store images in device gallery</string>
-    <string name="setting_image_quality">Target image aspect ratio</string>
-    <string name="setting_image_quality_summary">Note - this is an estimate and will depend on your device capability &amp; aspect ratio. Choose smaller ratio values for smaller files.</string>
+    <string name="setting_image_quality">Target image dimensions</string>
+    <string name="setting_image_quality_summary">Note - this will match either width or height and will depend on your device capability &amp; aspect ratio. Choose a smaller ratio values for smaller files.</string>
     
     <!-- About -->
     <string name="url_feedback">https://forms.gle/tGRtd2y2P2iSXTZF8</string>

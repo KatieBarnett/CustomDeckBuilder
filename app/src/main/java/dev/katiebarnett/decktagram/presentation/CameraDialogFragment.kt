@@ -1,7 +1,6 @@
 package dev.katiebarnett.decktagram.presentation
 
 import android.Manifest
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.DialogInterface
@@ -24,6 +23,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.AndroidEntryPoint
@@ -186,7 +186,7 @@ class CameraDialogFragment : DialogFragment() {
     
     private fun displayCameraPermissionError() {
         context?.let {
-            AlertDialog.Builder(it).setMessage(R.string.error_camera_permission)
+            MaterialAlertDialogBuilder(it, R.string.error_camera_permission)
                 .setNegativeButton(R.string.error_button_negative) { _, _ ->
                     dismiss()
                 }
@@ -199,7 +199,7 @@ class CameraDialogFragment : DialogFragment() {
     
     private fun showGenericError() {
         context?.let {
-            AlertDialog.Builder(it).setMessage(R.string.error_camera_generic)
+            MaterialAlertDialogBuilder(it, R.string.error_camera_generic)
                 .setNeutralButton(R.string.error_button_neutral) { _, _ ->
                     dismiss()
                     this.dismiss()
@@ -217,7 +217,7 @@ class CameraDialogFragment : DialogFragment() {
                 it.startActivity(intent)
             } catch (e: ActivityNotFoundException) {
                 crashlytics.recordException(e)
-                AlertDialog.Builder(it).setMessage(R.string.error_settings)
+                MaterialAlertDialogBuilder(it, R.string.error_settings)
                     .setNegativeButton(R.string.error_button_negative) { _, _ ->
                         dismiss()
                     }
@@ -304,7 +304,7 @@ class CameraDialogFragment : DialogFragment() {
         val imageCount = viewModel.imageBufferCount.value ?: 0
         if (imageCount > 0) {
             context?.let {
-                AlertDialog.Builder(it).setMessage(
+                MaterialAlertDialogBuilder(it).setMessage(
                     resources.getQuantityString(R.plurals.camera_cancel_message, imageCount))
                     .setNegativeButton(R.string.camera_cancel_message_button_negative) { _, _ ->
                         dismiss()

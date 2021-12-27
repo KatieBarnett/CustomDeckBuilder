@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.ListPreference
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
+import com.takisoft.preferencex.PreferenceFragmentCompat
 import dagger.hilt.android.AndroidEntryPoint
 import dev.katiebarnett.decktagram.R
 import kotlinx.coroutines.launch
@@ -16,8 +16,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private val navigationId = R.id.SettingsFragment
 
     private val viewModel: SettingsViewModel by viewModels()
-    
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+
+    override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
 
         // Get the image storage preference
