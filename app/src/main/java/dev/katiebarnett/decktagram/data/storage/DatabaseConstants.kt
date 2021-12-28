@@ -7,5 +7,6 @@ class DatabaseConstants {
         const val TABLE_GAMES = "games"
         const val TABLE_DECKS = "decks"
         const val TABLE_CARDS = "cards"
+        const val TABLE_DECK_STATES = "deck_states"
     }
 }

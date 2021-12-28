@@ -30,6 +30,7 @@ buildscript {
         def datastore_preference_version = "1.0.0"
         def coil_version = "1.4.0"
         def markdown_view_version = "1.1.1"
+        def moshi_version = "1.13.0"
 
         libraries = [
                 // Kotlin standard library
@@ -91,12 +92,17 @@ buildscript {
                 "com.google.firebase:firebase-crashlytics",
                 
                 // Markdown View
-                "com.github.mukeshsolanki:MarkdownView-Android:$markdown_view_version"
+                "com.github.mukeshsolanki:MarkdownView-Android:$markdown_view_version",
+                
+                // Moshi
+                "com.squareup.moshi:moshi:$moshi_version",
+                "com.squareup.moshi:moshi-kotlin:$moshi_version"
         ]
         
         librariesKapt = [
                 "com.google.dagger:hilt-compiler:$hilt_version",
-                "androidx.room:room-compiler:$room_version"
+                "androidx.room:room-compiler:$room_version",
+                "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
         ]
     }
     

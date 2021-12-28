@@ -6,8 +6,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import dev.katiebarnett.decktagram.data.storage.DeckBuilderDao
-import dev.katiebarnett.decktagram.data.storage.DeckBuilderDatabase
+import dev.katiebarnett.decktagram.data.storage.DecktagramDao
+import dev.katiebarnett.decktagram.data.storage.DecktagramDatabase
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -16,12 +16,12 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideDeckBuilderDatabase(@ApplicationContext context: Context): DeckBuilderDatabase {
-        return DeckBuilderDatabase.getInstance(context)
+    fun provideDecktagramDatabase(@ApplicationContext context: Context): DecktagramDatabase {
+        return DecktagramDatabase.getInstance(context)
     }
 
     @Provides
-    fun provideDeckBuilderDao(deckBuilderDatabase: DeckBuilderDatabase): DeckBuilderDao {
-        return deckBuilderDatabase.deckBuilderDao()
+    fun provideDecktagramDao(decktagramDatabase: DecktagramDatabase): DecktagramDao {
+        return decktagramDatabase.deckBuilderDao()
     }
 }

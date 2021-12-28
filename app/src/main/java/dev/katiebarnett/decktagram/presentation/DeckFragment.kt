@@ -67,6 +67,8 @@ class DeckFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
+        viewModel.onStateChanged.observe(viewLifecycleOwner, {})
+        
         viewModel.deck.observe(viewLifecycleOwner, {
             it?.let { deck ->
                 (activity as AppCompatActivity).supportActionBar?.title = String.format(getString(R.string.deck_fragment_title), deck.name)
@@ -99,7 +101,7 @@ class DeckFragment : Fragment() {
             } else {
                 DeckViewModel.DeckDisplayState.NONE
             }
-            analytics.logAction(OpenAllCards(viewModel.cards.value?.size ?: 0, viewModel.drawnCards.value?.size ?: 0, viewModel.remainingCards.value?.size ?: 0))
+            analytics.logAction(OpenAllCards(viewModel.cards.value?.size ?: 0, viewModel.deckState.value?.drawnCards?.size ?: 0, viewModel.deckState.value?.remainingCards?.size ?: 0))
         }
 
         binding.drawnCards.root.setOnClickListener {            
@@ -108,7 +110,7 @@ class DeckFragment : Fragment() {
             } else {
                 DeckViewModel.DeckDisplayState.NONE
             }
-            analytics.logAction(OpenDrawnCards(viewModel.cards.value?.size ?: 0, viewModel.drawnCards.value?.size ?: 0, viewModel.remainingCards.value?.size ?: 0))
+            analytics.logAction(OpenDrawnCards(viewModel.cards.value?.size ?: 0, viewModel.deckState.value?.drawnCards?.size ?: 0, viewModel.deckState.value?.remainingCards?.size ?: 0))
         }
 
         binding.remainingCards.root.setOnClickListener {            
@@ -117,7 +119,7 @@ class DeckFragment : Fragment() {
             } else {
                 DeckViewModel.DeckDisplayState.NONE
             }
-            analytics.logAction(OpenRemainingCards(viewModel.cards.value?.size ?: 0, viewModel.drawnCards.value?.size ?: 0, viewModel.remainingCards.value?.size ?: 0))
+            analytics.logAction(OpenRemainingCards(viewModel.cards.value?.size ?: 0, viewModel.deckState.value?.drawnCards?.size ?: 0, viewModel.deckState.value?.remainingCards?.size ?: 0))
         }
 
         viewModel.deckDeleteResponse.observe(viewLifecycleOwner, {

@@ -4,10 +4,11 @@ import androidx.room.*
 import dev.katiebarnett.decktagram.models.Card
 import dev.katiebarnett.decktagram.models.Deck
 import dev.katiebarnett.decktagram.models.Game
+import dev.katiebarnett.decktagram.models.PersistedDeckState
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface DeckBuilderDao {
+interface DecktagramDao {
 
     // Games
     @Query("SELECT * FROM " + DatabaseConstants.TABLE_GAMES + " ORDER BY gameName")
@@ -47,5 +48,17 @@ interface DeckBuilderDao {
 
     @Delete
     suspend fun delete(card: Card)
+
+    // Deck State
+    @Query("SELECT * FROM " + DatabaseConstants.TABLE_DECK_STATES + " WHERE deckId = :deckId")
+    fun getDeckState(deckId: Long): Flow<List<PersistedDeckState>>
     
+    @Query("SELECT * FROM " + DatabaseConstants.TABLE_DECK_STATES + " WHERE gameId = :gameId")
+    fun getGameState(gameId: Long): Flow<List<PersistedDeckState>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(vararg deckState: PersistedDeckState?): List<Long>
+
+    @Delete
+    suspend fun delete(deckState: PersistedDeckState)
 }

@@ -1,6 +1,6 @@
 package dev.katiebarnett.decktagram.data.repositories
 
-import dev.katiebarnett.decktagram.data.storage.DeckBuilderDao
+import dev.katiebarnett.decktagram.data.storage.DecktagramDao
 import dev.katiebarnett.decktagram.models.Card
 import dev.katiebarnett.decktagram.models.Deck
 import dev.katiebarnett.decktagram.models.Game
@@ -11,48 +11,48 @@ import javax.inject.Singleton
 
 @Singleton
 class GameRepository @Inject constructor(
-    private val deckBuilderDao: DeckBuilderDao
+    private val decktagramDao: DecktagramDao
 ) {
 
     fun getAllGames(): Flow<List<Game>> {
-        return deckBuilderDao.getAllGames()
+        return decktagramDao.getAllGames()
     }
     
     suspend fun updateGame(game: Game): Long {
         game.lastModified = System.currentTimeMillis()
-        val primaryKey = deckBuilderDao.insert(game)
+        val primaryKey = decktagramDao.insert(game)
         return primaryKey.firstOrNull() ?: throw Throwable("Error updating game")
     }
 
     fun getGame(id: Long): Flow<Game> {
-        return deckBuilderDao.getGame(id).map { 
+        return decktagramDao.getGame(id).map { 
             it.firstOrNull() ?: throw Throwable("Error getting game")
         }
     }
     
     suspend fun deleteGame(game: Game) {
-        deckBuilderDao.delete(game)
+        decktagramDao.delete(game)
     }
     
     fun getDecksForGame(gameId: Long): Flow<List<Deck>> {
-        return deckBuilderDao.getDecksForGame(gameId)
+        return decktagramDao.getDecksForGame(gameId)
     }
 
     fun getDeck(id: Long): Flow<Deck> {
-        return deckBuilderDao.getDeck(id)
+        return decktagramDao.getDeck(id)
     }
 
     fun getCardsForDeck(deckId: Long): Flow<List<Card>> {
-        return deckBuilderDao.getCardsForDeck(deckId)
+        return decktagramDao.getCardsForDeck(deckId)
     }
 
     suspend fun deleteDeck(deck: Deck) {
-        deckBuilderDao.delete(deck)
+        decktagramDao.delete(deck)
     }
 
     suspend fun updateDeck(deck: Deck): Long {
         deck.lastModified = System.currentTimeMillis()
-        val primaryKey = deckBuilderDao.insert(deck)
+        val primaryKey = decktagramDao.insert(deck)
         return primaryKey.firstOrNull() ?: throw Throwable("Error updating deck")
     }
 
@@ -63,11 +63,11 @@ class GameRepository @Inject constructor(
             imageUrl = cardPath,
             deckId = deckId
         )
-        val primaryKey = deckBuilderDao.insert(card)
+        val primaryKey = decktagramDao.insert(card)
         return primaryKey.firstOrNull() ?: throw Throwable("Error updating card")
     }
 
     suspend fun deleteCard(card: Card) {
-        deckBuilderDao.delete(card)
+        decktagramDao.delete(card)
     }
 }
