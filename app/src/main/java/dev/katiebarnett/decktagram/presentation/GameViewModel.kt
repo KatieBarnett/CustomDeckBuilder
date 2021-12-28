@@ -3,6 +3,7 @@ package dev.katiebarnett.decktagram.presentation
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.katiebarnett.decktagram.data.repositories.GameRepository
+import dev.katiebarnett.decktagram.data.repositories.StateRepository
 import dev.katiebarnett.decktagram.models.Deck
 import dev.katiebarnett.decktagram.models.Game
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GameViewModel @Inject constructor(
     private val gameRepository: GameRepository,
+    private val stateRepository: StateRepository,
     private val state: SavedStateHandle
 ) : ViewModel() {
 
@@ -84,6 +86,16 @@ class GameViewModel @Inject constructor(
                     // TODO clean up unused internal images
                 }
                 _gameDeleteResponse.postValue(true)
+            }
+        }
+    }
+    
+    fun resetGame() {
+        viewModelScope.launch(Dispatchers.IO) {
+            stateRepository.getGameState(gameId).collect { 
+                it.forEach {
+                    stateRepository.deleteDeckState(it)
+                }
             }
         }
     }

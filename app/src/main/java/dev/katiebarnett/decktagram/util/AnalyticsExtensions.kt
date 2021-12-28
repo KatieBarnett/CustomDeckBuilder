@@ -42,6 +42,9 @@ fun FirebaseAnalytics.logAction(action: AnalyticsAction) {
         is DeleteGame -> {
             bundle.putInt(PARAM_DECK_COUNT, action.deckCount)
         }
+        is ResetGame -> {
+            bundle.putInt(PARAM_DECK_COUNT, action.deckCount)
+        }
         is OpenAllCards -> {
             bundle.putInt(PARAM_CARD_COUNT, action.totalCardCount)
             bundle.putInt(PARAM_DRAWN_CARD_COUNT, action.drawnCardCount)

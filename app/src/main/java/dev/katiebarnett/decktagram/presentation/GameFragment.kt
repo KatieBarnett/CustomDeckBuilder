@@ -126,7 +126,8 @@ class GameFragment : Fragment(), NewDeckDialog.DialogListener {
                 addDeck()
             }
             R.id.action_reset_game -> {
-                // TODO
+                analytics.logAction(ResetGame(viewModel.decks.value?.size ?: 0))
+                viewModel.resetGame()
             }
             R.id.action_delete_game -> {
                 analytics.logAction(DeleteGame(viewModel.decks.value?.size ?: 0))

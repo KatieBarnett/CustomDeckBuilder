@@ -30,6 +30,7 @@ data class CameraCancel(val imageCount: Int): AnalyticsAction(actionName = "came
 data class DeleteGame(val deckCount: Int): AnalyticsAction(actionName = "delete_game")
 data class DeleteDeck(val cardCount: Int): AnalyticsAction(actionName = "delete_deck")
 data class ResetDeck(val cardCount: Int): AnalyticsAction(actionName = "reset_deck")
+data class ResetGame(val deckCount: Int): AnalyticsAction(actionName = "reset_reset_game")
 object DrawCard: AnalyticsAction(actionName = "draw_card")
 object UndoDrawCard: AnalyticsAction(actionName = "undo_draw_card")
 data class AddCardsToDeck(val cardCount: Int): AnalyticsAction(actionName = "add_cards_to_deck")

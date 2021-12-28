@@ -166,11 +166,14 @@ class DeckViewModel @Inject constructor(
         deck.value?.let {
             viewModelScope.launch(Dispatchers.IO) {
                 try {
-                    if (deckStateVal == null) {
+                    if (deckStateVal == null && persistedDeckStateVal == null) {
+                        // All states are empty
+                        resetDeck()
+                    } else if (deckStateVal == null) {
                         // State is empty
                         deckState.postValue(persistedDeckStateVal?.map(cards.value ?: listOf()))
                     } else if (persistedDeckStateVal == null) {
-                        // Persisted is older
+                        // Persisted is empty
                         stateRepository.updateDeckState(it, deckStateVal)
                     } else if (deckStateVal.lastModified > persistedDeckStateVal.lastModified) {
                         // Persisted is older
