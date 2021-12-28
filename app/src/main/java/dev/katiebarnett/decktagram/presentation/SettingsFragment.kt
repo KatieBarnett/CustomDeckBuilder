@@ -1,6 +1,8 @@
 package dev.katiebarnett.decktagram.presentation
 
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.ListPreference
@@ -22,6 +24,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     @Inject
     lateinit var analytics: FirebaseAnalytics
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.settings_fragment_label)
+        (activity as AppCompatActivity).supportActionBar?.subtitle = null
+    }
 
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)

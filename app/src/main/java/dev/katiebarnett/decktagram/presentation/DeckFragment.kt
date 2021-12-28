@@ -70,7 +70,8 @@ class DeckFragment : Fragment() {
         
         viewModel.deck.observe(viewLifecycleOwner, {
             it?.let { deck ->
-                (activity as AppCompatActivity).supportActionBar?.title = String.format(getString(R.string.deck_fragment_title), deck.name)
+                (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.deck_fragment_label)
+                (activity as AppCompatActivity).supportActionBar?.subtitle = deck.name
             }
         })
         

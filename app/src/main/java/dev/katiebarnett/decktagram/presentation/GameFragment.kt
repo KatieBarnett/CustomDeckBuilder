@@ -72,7 +72,8 @@ class GameFragment : Fragment(), NewDeckDialog.DialogListener {
 
         viewModel.game.observe(viewLifecycleOwner, {
             it?.let {
-                (activity as AppCompatActivity).supportActionBar?.title = String.format(getString(R.string.game_fragment_title), it.name)
+                (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.game_fragment_label)
+                (activity as AppCompatActivity).supportActionBar?.subtitle = it.name
             }
         })
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -31,6 +32,10 @@ class AboutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.about_fragment_label)
+        (activity as AppCompatActivity).supportActionBar?.subtitle = null
+        
         binding.markdownView.isOpenUrlInBrowser = true
         binding.markdownView.loadMarkdownFromAssets("About.md")
         
