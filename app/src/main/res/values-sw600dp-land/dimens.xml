@@ -1,5 +1,7 @@
 <resources>
-    <integer name="card_columns">4</integer>
+    
+    <integer name="card_columns">8</integer>
     <integer name="deck_columns">4</integer>
     <integer name="game_columns">4</integer>
+    
 </resources>

@@ -26,6 +26,13 @@
             android:layout_height="match_parent"
             app:visibleOrGone="@{viewModel.showContent}">
             
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineVerticalCenter"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5"/>
+            
             <ImageView
                 android:id="@+id/drawnCard"
                 android:layout_width="0dp"
@@ -36,9 +43,9 @@
                 android:scaleType="centerInside"
                 android:adjustViewBounds="true"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/guidelineVerticalCenter"
                 app:layout_constraintEnd_toStartOf="@id/barrier"
-                app:layout_constraintBottom_toTopOf="@id/allCards" />
+                app:layout_constraintBottom_toBottomOf="parent" />
             
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/barrier"
@@ -71,7 +78,7 @@
                 app:layout_constraintTop_toBottomOf="@id/drawCardButton"
                 app:layout_constraintStart_toEndOf="@id/barrier"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/allCards"/>
+                app:layout_constraintBottom_toBottomOf="parent"/>
             
             <include
                 android:id="@+id/allCards"
@@ -81,9 +88,9 @@
                 app:groupName="@{@string/deck_group_all}"
                 app:cardCount="@{viewModel.cards.size}"
                 app:expanded="@{viewModel.displayAllCards}"
-                app:layout_constraintTop_toBottomOf="@id/drawnCard"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guidelineVerticalCenter"
                 app:layout_constraintBottom_toTopOf="@id/allCardsList"
                 app:layout_constraintVertical_chainStyle="packed"
                 app:layout_constraintVertical_bias="0.0" />
@@ -92,11 +99,10 @@
                 android:id="@+id/allCardsList"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.5"
                 app:layout_constraintTop_toBottomOf="@id/allCards"
                 app:layout_constraintBottom_toTopOf="@id/drawnCards"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guidelineVerticalCenter"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:items="@{viewModel.cards}"
                 app:itemBinding="@{listItemBinding}"
@@ -113,18 +119,17 @@
                 app:expanded="@{viewModel.displayDrawnCards}"
                 app:layout_constraintTop_toBottomOf="@id/allCardsList"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guidelineVerticalCenter"
                 app:layout_constraintBottom_toTopOf="@id/drawnCardsList" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/drawnCardsList"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.5"
                 app:layout_constraintTop_toBottomOf="@id/drawnCards"
                 app:layout_constraintBottom_toTopOf="@id/remainingCards"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guidelineVerticalCenter"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:items="@{viewModel.deckState.drawnCards}"
                 app:itemBinding="@{listItemBinding}"
@@ -142,18 +147,17 @@
                 app:expanded="@{viewModel.displayRemainingCards}"
                 app:layout_constraintTop_toBottomOf="@id/drawnCardsList"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guidelineVerticalCenter"
                 app:layout_constraintBottom_toTopOf="@id/remainingCardsList" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/remainingCardsList"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.5"
                 app:layout_constraintTop_toBottomOf="@id/remainingCards"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guidelineVerticalCenter"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:items="@{viewModel.deckState.remainingCards}"
                 app:itemBinding="@{listItemBinding}"

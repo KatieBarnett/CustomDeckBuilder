@@ -2,10 +2,6 @@
 
     <dimen name="space">16dp</dimen>
     <dimen name="space_half">8dp</dimen>
-    
-    <dimen name="elevation">4dp</dimen>
-    
-    <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="camera_button_size">100dp</dimen>
     <dimen name="camera_last_captured_size">100dp</dimen>
