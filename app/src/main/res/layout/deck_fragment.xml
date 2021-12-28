@@ -36,8 +36,8 @@
                 android:scaleType="centerInside"
                 android:adjustViewBounds="true"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/barrier"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/barrier"
                 app:layout_constraintBottom_toTopOf="@id/allCards" />
             
             <androidx.constraintlayout.widget.Barrier
@@ -56,8 +56,8 @@
                 android:layout_marginEnd="@dimen/space_half"
                 android:enabled="@{viewModel.drawCardEnabled}"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/barrier"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toEndOf="@id/barrier"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/undoButton" />
 
             <com.google.android.material.button.MaterialButton
@@ -69,8 +69,8 @@
                 android:layout_marginEnd="@dimen/space_half"
                 android:enabled="@{viewModel.undoDrawCardEnabled}"
                 app:layout_constraintTop_toBottomOf="@id/drawCardButton"
-                app:layout_constraintLeft_toRightOf="@id/barrier"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toEndOf="@id/barrier"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/allCards"/>
             
             <include
@@ -176,8 +176,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/deck_empty_text"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/addCardsButton"
                 app:layout_constraintVertical_chainStyle="packed" />
             
@@ -190,8 +190,8 @@
                 app:icon="@drawable/ic_add_card"
                 android:text="@string/deck_add_cards_button"
                 app:layout_constraintTop_toBottomOf="@id/emptyText"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
             
         </androidx.constraintlayout.widget.ConstraintLayout>

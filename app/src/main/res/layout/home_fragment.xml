@@ -53,8 +53,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/home_empty_text"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/addGameButton"
                 app:layout_constraintVertical_chainStyle="packed" />
 
@@ -67,8 +67,8 @@
                 app:icon="@drawable/ic_add_game"
                 android:text="@string/home_add_game_button"
                 app:layout_constraintTop_toBottomOf="@id/emptyText"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

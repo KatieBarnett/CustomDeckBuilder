@@ -42,8 +42,7 @@ class DeckFragment : Fragment() {
 
     private val cardListItemClickListener = (object: OnItemClickListener<Card> {
         override fun onItemClicked(item: Card) {
-            // TODO show card
-//            findNavController().navigate(GameFragmentDirections.actionGameFragmentToDeckFragment(deckId = item.id))
+            viewCard(item)
         }
     })
 
@@ -93,6 +92,12 @@ class DeckFragment : Fragment() {
         binding.undoButton.setOnClickListener {
             analytics.logAction(UndoDrawCard)
             viewModel.undoDrawCard()
+        }
+        
+        binding.drawnCard.setOnClickListener {
+            viewModel.lastDrawnCard.value?.let {
+                viewCard(it)
+            }
         }
         
         binding.allCards.root.setOnClickListener {
@@ -168,6 +173,11 @@ class DeckFragment : Fragment() {
             }
         }
         return true
+    }
+    
+    fun viewCard(card: Card) {
+        val dialog = ViewImageDialogFragment.newInstance(imageUrl = card.imageUrl, imageName = card.name)
+        dialog.show(childFragmentManager, ViewImageDialogFragment.TAG)
     }
 
     override fun onResume() {

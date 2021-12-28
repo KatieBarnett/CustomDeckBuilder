@@ -21,7 +21,7 @@ object DeckScreen: AnalyticsScreen(name = "deck")
 object CameraScreen: AnalyticsScreen(name = "camera")
 object SettingsScreen: AnalyticsScreen(name = "settings")
 object AboutScreen: AnalyticsScreen(name = "about")
-object ViewCardScreen: AnalyticsScreen(name = "view_card")
+object ViewImageScreen: AnalyticsScreen(name = "view_image")
 
 sealed class AnalyticsAction(val actionName: String)
 object FeedbackMenuItem: AnalyticsAction(actionName = "open_feedback_menu_item")

@@ -26,8 +26,8 @@
             android:id="@+id/viewFinder"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/barrier"/>
         
@@ -35,8 +35,8 @@
             android:id="@+id/barrier"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:barrierDirection="top"
             app:constraint_referenced_ids="captureButton,doneButton,lastCaptured"/>
         
@@ -47,8 +47,8 @@
             tools:src="@mipmap/ic_launcher_foreground"
             app:loadImage="@{viewModel.lastCapturedImage}"
             app:layout_constraintTop_toTopOf="@id/captureButton"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/captureButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/captureButton"
             app:layout_constraintBottom_toBottomOf="@id/captureButton" />
         
         <com.google.android.material.button.MaterialButton
@@ -59,8 +59,8 @@
             android:text="@string/camera_capture_button"
             android:layout_marginTop="@dimen/space_half"
             app:layout_constraintTop_toBottomOf="@id/barrier"
-            app:layout_constraintLeft_toRightOf="@id/lastCaptured"
-            app:layout_constraintRight_toLeftOf="@id/doneButton"
+            app:layout_constraintStart_toEndOf="@id/lastCaptured"
+            app:layout_constraintEnd_toStartOf="@id/doneButton"
             app:layout_constraintBottom_toTopOf="@id/guidelineBottom"/>
         
         <com.google.android.material.button.MaterialButton
@@ -71,8 +71,8 @@
             android:text="@string/camera_done_button"
             android:layout_marginTop="@dimen/space_half"
             app:layout_constraintTop_toBottomOf="@id/barrier"
-            app:layout_constraintLeft_toRightOf="@id/captureButton"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@id/captureButton"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/guidelineBottom"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
@@ -83,7 +83,7 @@
             android:layout_height="@dimen/camera_settings_button_size"
             android:layout_margin="@dimen/space_half"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"/>
         
         
     </androidx.constraintlayout.widget.ConstraintLayout>

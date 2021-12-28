@@ -23,7 +23,7 @@
             android:id="@+id/image"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            tools:src="@drawable/ic_launcher_foreground"
+            tools:src="@drawable/decktagram_light"
             app:loadImage="@{item.imageUrl}"
             app:layout_constraintVertical_chainStyle="packed"
             android:layout_margin="@dimen/space_half"
