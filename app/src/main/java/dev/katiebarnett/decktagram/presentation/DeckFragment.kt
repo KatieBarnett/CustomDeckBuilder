@@ -65,8 +65,9 @@ class DeckFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
-        viewModel.onStateChanged.observe(viewLifecycleOwner, {})
+
+        viewModel.onDeckStateChanged.observe(viewLifecycleOwner, {})
+        viewModel.onDeckAndCardsLoaded.observe(viewLifecycleOwner, {})
         
         viewModel.deck.observe(viewLifecycleOwner, {
             it?.let { deck ->
@@ -136,8 +137,6 @@ class DeckFragment : Fragment() {
         
         viewModel.cards.observe(viewLifecycleOwner, {
             crashlytics.setCustomKey(KEY_DECK_CARD_COUNT, it.size)
-
-            viewModel.doResetIfRequired()
         })
     }
     

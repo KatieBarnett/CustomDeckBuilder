@@ -4,7 +4,6 @@ import dev.katiebarnett.decktagram.data.storage.DecktagramDao
 import dev.katiebarnett.decktagram.models.Deck
 import dev.katiebarnett.decktagram.models.DeckState
 import dev.katiebarnett.decktagram.models.PersistedDeckState
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,11 +12,11 @@ class StateRepository @Inject constructor(
     private val decktagramDao: DecktagramDao
 ) {
 
-    fun getDeckState(deckId: Long): Flow<List<PersistedDeckState>> {
-        return decktagramDao.getDeckState(deckId)
+    fun getDeckState(deckId: Long): PersistedDeckState? {
+        return decktagramDao.getDeckState(deckId).firstOrNull()
     }
 
-    fun getGameState(gameId: Long): Flow<List<PersistedDeckState>> {
+    fun getGameState(gameId: Long): List<PersistedDeckState> {
         return decktagramDao.getGameState(gameId)
     }
     

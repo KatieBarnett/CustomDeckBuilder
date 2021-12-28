@@ -1,5 +1,6 @@
 package dev.katiebarnett.decktagram.util
 
+import android.util.Log
 import dev.katiebarnett.decktagram.models.Card
 import dev.katiebarnett.decktagram.models.Deck
 import dev.katiebarnett.decktagram.models.DeckState
@@ -30,7 +31,17 @@ fun PersistedDeckState.map(cards: List<Card>): DeckState {
 }
 
 fun List<Card>.selectList(selection: List<Long>): List<Card> {
-    return selection.map { selectionId ->
-        this.firstOrNull { selectionId == it.id } ?: throw PersistedDeckStateInvalid
+    return try {
+        selection.map { selectionId ->
+            val result = this.firstOrNull { selectionId == it.id } 
+            if (result == null) {
+                Log.d("SOMETHING", "error")
+                throw PersistedDeckStateInvalid
+            }
+            result
+        }
+    } catch (e: Exception) {
+        Log.e("SOMETHING", e.message, e)
+        throw PersistedDeckStateInvalid
     }
 }

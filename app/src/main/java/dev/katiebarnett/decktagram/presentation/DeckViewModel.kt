@@ -41,7 +41,7 @@ class DeckViewModel @Inject constructor(
     val snackbar: LiveData<String?>
         get() = _snackbar
 
-    private val _deckDeleteResponse = MutableLiveData<Boolean>(false)
+    private val _deckDeleteResponse = MutableLiveData(false)
     val deckDeleteResponse: LiveData<Boolean>
         get() = _deckDeleteResponse
 
@@ -49,6 +49,7 @@ class DeckViewModel @Inject constructor(
         get() = state.get<Long>("deckId") ?: -1
 
     private val _deck: MutableStateFlow<Deck?> = MutableStateFlow(null)
+    private var persistedDeckState: PersistedDeckState? = null
 
     val deck = _deck.asLiveData()
     
@@ -56,20 +57,17 @@ class DeckViewModel @Inject constructor(
         gameRepository.getCardsForDeck(it.id)
     }.asLiveData()
     
-    val persistedDeckState = _deck.filterNotNull().flatMapLatest {
-        stateRepository.getDeckState(it.id)
-    }.asLiveData()
-
     val deckState = MutableLiveData<DeckState?>(null)
-
-    val onStateChanged = MediatorLiveData<Unit>().apply {
-        addSource(deckState) {
-            value = syncDeckState(deckState.value, persistedDeckState.value?.firstOrNull())
-        }
-        addSource(persistedDeckState) {
-            value = syncDeckState(deckState.value, persistedDeckState.value?.firstOrNull())
-        }
+    
+    val onDeckStateChanged = Transformations.map(deckState) {
+        saveDeckState()
     }
+
+    val onDeckAndCardsLoaded = Transformations.map(cards) {
+        loadDeckState()
+    }
+    
+    private val stateSyncLoading = MutableLiveData(false)
     
     val lastDrawnCard = Transformations.map(deckState) {
         it?.drawnCards?.lastOrNull()
@@ -89,12 +87,22 @@ class DeckViewModel @Inject constructor(
         it == DeckDisplayState.REMAINING_CARDS
     }
 
-    val drawCardEnabled = Transformations.map(deckState) {
-        !it?.remainingCards.isNullOrEmpty()
+    val drawCardEnabled = MediatorLiveData<Boolean>().apply {
+        addSource(deckState) {
+            value = deckState.value?.remainingCards.isNullOrEmpty() == false && stateSyncLoading.value == false
+        }
+        addSource(stateSyncLoading) {
+            value = deckState.value?.remainingCards.isNullOrEmpty() == false && stateSyncLoading.value == false
+        }
     }
 
-    val undoDrawCardEnabled = Transformations.map(deckState) {
-        !it?.drawnCards.isNullOrEmpty()
+    val undoDrawCardEnabled = MediatorLiveData<Boolean>().apply {
+        addSource(deckState) {
+            value = deckState.value?.drawnCards.isNullOrEmpty() == false && stateSyncLoading.value == false
+        }
+        addSource(stateSyncLoading) {
+            value = deckState.value?.drawnCards.isNullOrEmpty() == false && stateSyncLoading.value == false
+        }
     }
 
     val showEmpty = Transformations.map(cards) {
@@ -109,6 +117,7 @@ class DeckViewModel @Inject constructor(
         launchDataLoad {
             gameRepository.getDeck(deckId).collect { 
                 _deck.value = it
+                persistedDeckState = stateRepository.getDeckState(it.id)
                 _loading.postValue(false)
             }
         }
@@ -144,13 +153,6 @@ class DeckViewModel @Inject constructor(
         }
     }
     
-    fun doResetIfRequired() {
-        if (!cards.value.isNullOrEmpty()
-            && (deckState.value?.needsReset != false || deckState.value?.totalSize != (cards.value?.size ?: 0))) {
-            resetDeck()
-        }
-    }
-    
     fun resetDeck() {
         cards.value?.let { cards ->
             deckState.postValue(
@@ -161,31 +163,37 @@ class DeckViewModel @Inject constructor(
             )
         }
     }
-    
-    private fun syncDeckState(deckStateVal: DeckState?, persistedDeckStateVal: PersistedDeckState?) {
-        deck.value?.let {
-            viewModelScope.launch(Dispatchers.IO) {
-                try {
-                    if (deckStateVal == null && persistedDeckStateVal == null) {
-                        // All states are empty
-                        resetDeck()
-                    } else if (deckStateVal == null) {
-                        // State is empty
-                        deckState.postValue(persistedDeckStateVal?.map(cards.value ?: listOf()))
-                    } else if (persistedDeckStateVal == null) {
-                        // Persisted is empty
-                        stateRepository.updateDeckState(it, deckStateVal)
-                    } else if (deckStateVal.lastModified > persistedDeckStateVal.lastModified) {
-                        // Persisted is older
-                        stateRepository.updateDeckState(it, deckStateVal)
-                    } else if (deckStateVal.lastModified < persistedDeckStateVal.lastModified) {
-                        // Persisted is newer
-                        deckState.postValue(persistedDeckStateVal.map(cards.value ?: listOf()))
+
+    private fun loadDeckState() {
+        deck.value?.let { _ ->
+            cards.value?.let { cards ->
+                if (cards.isNotEmpty()) {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        stateSyncLoading.postValue(true)
+                        try {
+                            val persistedState = persistedDeckState?.map(cards)
+                            if (persistedState != null) {
+                                deckState.postValue(persistedState)
+                            } else {
+                                resetDeck()
+                            }
+                        } catch (e: Exception) {
+                            Log.e(TAG, "State updating failed", e)
+                            crashlytics.recordException(e)
+                            resetDeck()
+                        }
+                        stateSyncLoading.postValue(false)
                     }
-                } catch (e: Exception) {
-                    Log.e(TAG, "State updating failed", e)
-                    crashlytics.recordException(e)
-                    resetDeck()
+                }
+            }
+        }
+    }
+
+    private fun saveDeckState() {
+        deckState.value?.let { state ->
+            deck.value?.let { deck ->
+                viewModelScope.launch(Dispatchers.IO) {
+                    stateRepository.updateDeckState(deck, state)
                 }
             }
         }

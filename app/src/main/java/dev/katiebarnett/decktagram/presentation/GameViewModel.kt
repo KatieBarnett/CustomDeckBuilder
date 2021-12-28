@@ -92,10 +92,8 @@ class GameViewModel @Inject constructor(
     
     fun resetGame() {
         viewModelScope.launch(Dispatchers.IO) {
-            stateRepository.getGameState(gameId).collect { 
-                it.forEach {
-                    stateRepository.deleteDeckState(it)
-                }
+            stateRepository.getGameState(gameId).forEach { 
+                stateRepository.deleteDeckState(it)
             }
         }
     }

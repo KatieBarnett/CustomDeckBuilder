@@ -51,10 +51,10 @@ interface DecktagramDao {
 
     // Deck State
     @Query("SELECT * FROM " + DatabaseConstants.TABLE_DECK_STATES + " WHERE deckId = :deckId")
-    fun getDeckState(deckId: Long): Flow<List<PersistedDeckState>>
+    fun getDeckState(deckId: Long): List<PersistedDeckState>
     
     @Query("SELECT * FROM " + DatabaseConstants.TABLE_DECK_STATES + " WHERE gameId = :gameId")
-    fun getGameState(gameId: Long): Flow<List<PersistedDeckState>>
+    fun getGameState(gameId: Long): List<PersistedDeckState>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg deckState: PersistedDeckState?): List<Long>
