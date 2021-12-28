@@ -18,5 +18,7 @@
     <dimen name="expand_collapse_width">20dp</dimen>
     
     <integer name="card_columns">4</integer>
+    <integer name="deck_columns">2</integer>
+    <integer name="game_columns">2</integer>
     
 </resources>

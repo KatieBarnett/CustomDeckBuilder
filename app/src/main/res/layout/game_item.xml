@@ -18,16 +18,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:selectableItemBackground"
+        android:padding="@dimen/space_half"
         android:onClick="@{() -> itemClickListener.onItemClicked(item)}">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/name"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:background="?attr/colorSurface"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            app:layout_constraintDimensionRatio="H,1:1"
+            android:gravity="center"
             tools:text="Game name"
             android:text="@{item.name}"
             app:layout_constraintVertical_chainStyle="packed"
-            android:layout_margin="@dimen/space_half"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
